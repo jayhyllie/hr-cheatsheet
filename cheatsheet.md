@@ -1,6 +1,4 @@
 # **Cheatsheet**
-## **Liquid**
-### *Standard Liquid*
 
 ### *Make different shapes with Clip path*
 ```
