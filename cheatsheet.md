@@ -1,96 +1,45 @@
 # **Cheatsheet**
-
+## *FeedStuff*
 ### *HTML Unescape*
 ```
 .unescapeHtml().replace(/<[^>]*>/g, "")
 ```
-### *Make different shapes with Clip path*
+### *Remove from end of title*
 ```
-https://bennettfeely.com/clippy/
+title: $("g\\:title, title").text().split("-")[0]
 ```
-### *HTML Symbols*
+### *extraData to get products on sale*
 ```
-https://www.toptal.com/designers/htmlarrows/arrows/
+extraData.isOnSale: [$("main_variant > price").text(),$("main_variant > compare_at_price, main_variant > price").first().text()].subtract().matches(/^-/)
 ```
+### *Change the image size on SMARTWEB webP*
+```
+imgUrl: [$("g\\:image_link").text().replace(/(.*)\/.*$/, "$1"), $("item > g\\:image_link").text().split("/").pop().replace(/^/, "/_thumbs/")].join("").replace(/(.*)\./, "$1.w293.h293.fill.")
+```
+## *HIERARCHY*
+### *Remove from hierarchies*
+````
+.fns("removeMatching", /Alla produkter/ig)
+````
 ### *Recom on last hierarchy not first*
 ```
 extraData.hasMoreThanOneLevel: $(".m-breadcrumb li.page span").fns("text").slice(2).join("||").matches(/.*\|\|.*/)
 Switch out the classes and number of slice maybe
 ```
-### *Box selecter for category page*
+### *Hierarchy selecter for category pages*
 ```
 aw$(".breadcrumbs .items .item").fns("text").fns("trim").slice(1).asHierarchy()
 Switch out the classes
 ```
-### *Remove from hierarchies*
-````
-.fns("removeMatching", /Alla produkter/ig)
-````
 ### *Clean out categories in search*
 ```
 url: $("hasProducts, url").text().replace(/^false.*/, "").replace(/^true/, "")
 title: $("isVisibleInMenu, name").fns("text").join("||").replace(/^0.*/, "").split("||").pop()
 ```
+## *RECOMS*
 ### *Category page don't show on more than 8 products and show not on filter active*
 ```
 .catalog-category-view:has(.item:eq(8)):not(:has(.filter-active)) .column.main .category-product-actions
-```
-### *Add fade on last product in slider*
-```
-.aw-slider-{{ key }} .swiper-slide.swiper-slide-next + .swiper-slide + .swiper-slide {
-    opacity: .2;
-}
-```
-### *URL : Display none on recom*
-```
-var searchParams = new URLSearchParams(window.location.search);
-	console.log(typeof searchParams.get('p'));
-	if (searchParams.get('p') !== null){
-		document.querySelector("#aw-box-{{ key }}").style.display="none"
-	}
-```
-### *Set up instant grid search*
-```
-change the "var input" to the right class
-.attr("action", "/pages/search-results")
-Then in the HTML :
-<div class="aw-grid-search-results__submit-wrapper">
-		<a href="https://shenanigans.toys/pages/search-results?q={{query}}" class="aw-grid-search-results__submit-link">
-			{{ show_more_results_text }} ({{ products.totalResults }})
-		</a>
-	</div>
-```
-### *Take away from end of title*
-```
-title: $("g\\:title, title").text().split("-")[0]
-```
-### *Fix scroll in search*
-```
-max-height: 100vh;
-overflow: scroll;
-```
-### *Add filters in full search*
-```
-dubuy.dk, from all templates!!
-```
-### *Make a diagonal line-through*
-```
-.aw-oldPrice{
-	position: relative;
-}
-.aw-line {
-	position: absolute;
-    width: 80%;
-    left: 20px;
-    height: 1px;
-    border: none;
-    background: #185398;
-    transform: rotate(342deg) translate(-50%, -50%);
-}
-```
-### *Change the image size on SMARTWEB webP*
-```
-imgUrl: [$("g\\:image_link").text().replace(/(.*)\/.*$/, "$1"), $("item > g\\:image_link").text().split("/").pop().replace(/^/, "/_thumbs/")].join("").replace(/(.*)\./, "$1.w293.h293.fill.")
 ```
 ### *STRECHED recom fix*
 ```
@@ -118,9 +67,40 @@ if( !isNaN(basketAmount) ) {
     }
 }
 ```
-### *extraData to get products on sale*
+### *Add fade on last product in slider*
 ```
-extraData.isOnSale: [$("main_variant > price").text(),$("main_variant > compare_at_price, main_variant > price").first().text()].subtract().matches(/^-/)
+.aw-slider-{{ key }} .swiper-slide.swiper-slide-next + .swiper-slide + .swiper-slide {
+    opacity: .2;
+}
+```
+### *URL : Display none on recom*
+```
+var searchParams = new URLSearchParams(window.location.search);
+	console.log(typeof searchParams.get('p'));
+	if (searchParams.get('p') !== null){
+		document.querySelector("#aw-box-{{ key }}").style.display="none"
+	}
+```
+## *SEARCH*
+### *Set up instant grid search*
+```
+change the "var input" to the right class
+.attr("action", "/pages/search-results")
+Then in the HTML :
+<div class="aw-grid-search-results__submit-wrapper">
+		<a href="https://shenanigans.toys/pages/search-results?q={{query}}" class="aw-grid-search-results__submit-link">
+			{{ show_more_results_text }} ({{ products.totalResults }})
+		</a>
+	</div>
+```
+### *Fix scroll in search*
+```
+max-height: 100vh;
+overflow: scroll;
+```
+### *Add filters in full search*
+```
+dubuy.dk, from all templates!!
 ```
 ### *Remove CROSS in desktop search*
 ```
@@ -145,4 +125,28 @@ input[type="search"]::-webkit-search-results-decoration {
 ```
 var searchBtn = document.querySelector(".header-search");
 searchBtn.replaceWith(searchBtn.cloneNode(true));
+```
+## *RANDOM*
+### *Make a diagonal line-through*
+```
+.aw-oldPrice{
+	position: relative;
+}
+.aw-line {
+	position: absolute;
+    width: 80%;
+    left: 20px;
+    height: 1px;
+    border: none;
+    background: #185398;
+    transform: rotate(342deg) translate(-50%, -50%);
+}
+```
+### *Make different shapes with Clip path*
+```
+https://bennettfeely.com/clippy/
+```
+### *HTML Symbols*
+```
+https://www.toptal.com/designers/htmlarrows/arrows/
 ```
