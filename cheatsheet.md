@@ -1,5 +1,9 @@
 # **Cheatsheet**
 
+### *HTML Unescape*
+```
+.unescapeHtml().replace(/<[^>]*>/g, "")
+```
 ### *Make different shapes with Clip path*
 ```
 https://bennettfeely.com/clippy/
