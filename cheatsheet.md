@@ -139,6 +139,7 @@ searchBtn.replaceWith(searchBtn.cloneNode(true));
     {% endfor %}
 </span>
 (Remove limit : 1, to show all hierachies)
+https://explain.helloretail.com/DOum40Bd
 ```
 ## *RANDOM*
 ### *Make a diagonal line-through*
