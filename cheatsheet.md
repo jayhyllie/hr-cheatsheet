@@ -126,6 +126,20 @@ input[type="search"]::-webkit-search-results-decoration {
 var searchBtn = document.querySelector(".header-search");
 searchBtn.replaceWith(searchBtn.cloneNode(true));
 ```
+### *Add hierachypath to category content template*
+```
+<span class="hr-search-overlay-content-hierarchy-wrapper">
+    {% for level in ctnt.hierarchy limit : 1 %}
+    {% if level != "" and level != current_content_item.title %}
+    <span class="hr-search-overlay-content-category-hierarchy-category">{{ level }}</span>
+    {% unless forloop.last %}
+    <span class="hr-search-overlay-content-hierarchy-divider">›</span>
+    {% endunless %}
+    {% endif %}
+    {% endfor %}
+</span>
+(Remove limit : 1, to show all hierachies)
+```
 ## *RANDOM*
 ### *Make a diagonal line-through*
 ```
