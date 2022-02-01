@@ -1,5 +1,10 @@
 # **Cheatsheet**
 ## *FeedStuff*
+
+### *Url Selector*
+```
+$("html").parent()[0].location.href
+```
 ### *HTML Unescape*
 ```
 .unescapeHtml().replace(/<[^>]*>/g, "")
