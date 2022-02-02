@@ -147,6 +147,12 @@ searchBtn.replaceWith(searchBtn.cloneNode(true));
 https://explain.helloretail.com/DOum40Bd
 ```
 ## *RANDOM*
+### *Set Timeout*
+```
+setTimeout(function(){
+ *Add code here*
+},1000)
+```
 ### *Make a diagonal line-through*
 ```
 .aw-oldPrice{
