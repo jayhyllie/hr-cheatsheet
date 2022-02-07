@@ -86,6 +86,33 @@ var searchParams = new URLSearchParams(window.location.search);
 		document.querySelector("#aw-box-{{ key }}").style.display="none"
 	}
 ```
+### *Trigger Upsell Dropdown after page reload*
+```
+var viewportWidth = window.matchMedia("(min-width: 700px)");
+
+if(sessionStorage.getItem("buyButtonClicked")){
+
+if(sessionStorage.getItem("buyButtonClicked") === "true"){
+setTimeout(function(){
+document.querySelector("#slider-{{ key }}").style.overflow = "visible";
+if(viewportWidth.matches){
+document.querySelector("#slider-{{ key }}").style.height = "660px";
+document.querySelector("#{{ key }}").style.height = "715px";
+}
+else{
+document.querySelector("#slider-{{ key }}").style.height = "680px";
+document.querySelector("#{{ key }}").style.height = "820px";
+}
+sessionStorage.setItem("buyButtonClicked", "false");
+},1000);
+
+}
+}
+Array.from(document.querySelectorAll(".button-primary.button-icon")).pop().addEventListener("click",function(){
+sessionStorage.setItem("buyButtonClicked","true");
+});
+```
+
 ## *SEARCH*
 ### *Set up instant grid search*
 ```
