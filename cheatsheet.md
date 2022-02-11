@@ -17,6 +17,10 @@ title: $("g\\:title, title").text().split("-")[0]
 ```
 extraData.isOnSale: [$("main_variant > price").text(),$("main_variant > compare_at_price, main_variant > price").first().text()].subtract().matches(/^-/)
 ```
+### *SHOPIFY hasVariants selector*
+```
+extraData.hasVariants: $("variants > sku").fns("text").fns("replace", /.*/, "1").sum().notMatches(/^1$/)
+```
 ### *Change the image size on SMARTWEB webP*
 ```
 imgUrl: [$("g\\:image_link").text().replace(/(.*)\/.*$/, "$1"), $("item > g\\:image_link").text().split("/").pop().replace(/^/, "/_thumbs/")].join("").replace(/(.*)\./, "$1.w293.h293.fill.")
