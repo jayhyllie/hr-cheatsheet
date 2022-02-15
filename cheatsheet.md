@@ -21,6 +21,10 @@ extraData.isOnSale: [$("main_variant > price").text(),$("main_variant > compare_
 ```
 extraData.hasVariants: $("variants > sku").fns("text").fns("replace", /.*/, "1").sum().notMatches(/^1$/)
 ```
+### *Change image size*
+```
+.replace(/(\.[a-z]{3,4}\?)/i, "_300x$1")
+```
 ### *Change the image size on SMARTWEB webP*
 ```
 imgUrl: [$("g\\:image_link").text().replace(/(.*)\/.*$/, "$1"), $("item > g\\:image_link").text().split("/").pop().replace(/^/, "/_thumbs/")].join("").replace(/(.*)\./, "$1.w293.h293.fill.")
