@@ -17,6 +17,12 @@ title: $("g\\:title, title").text().split("-")[0]
 ```
 extraData.isOnSale: [$("main_variant > price").text(),$("main_variant > compare_at_price, main_variant > price").first().text()].subtract().matches(/^-/)
 ```
+### *SORT on largest saving*
+```
+extraData.saving: [[$("oldPrice").text(),
+$("price").first().text()].subtract().multiply(100),
+$("oldPrice").text()].divide().round().replace(/^/, "000").replace(/\d*(0\d{2})$/g, "$1")
+```
 ### *SHOPIFY hasVariants selector*
 ```
 extraData.hasVariants: $("variants > sku").fns("text").fns("replace", /.*/, "1").sum().notMatches(/^1$/)
