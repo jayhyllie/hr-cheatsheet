@@ -23,6 +23,10 @@ extraData.saving: [[$("oldPrice").text(),
 $("price").first().text()].subtract().multiply(100),
 $("oldPrice").text()].divide().round().replace(/^/, "000").replace(/\d*(0\d{2})$/g, "$1")
 ```
+### *DANDOMAIN sort out variants*
+```
+$("items > name, isVariantMaster").text().replace(/true$/, "").replace(/.*false$/, "")
+```
 ### *SHOPIFY hasVariants selector*
 ```
 extraData.hasVariants: $("variants > sku").fns("text").fns("replace", /.*/, "1").sum().notMatches(/^1$/)
