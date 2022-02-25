@@ -27,6 +27,10 @@ $("oldPrice").text()].divide().round().replace(/^/, "000").replace(/\d*(0\d{2})$
 ```
 $("items > name, isVariantMaster").text().replace(/true$/, "").replace(/.*false$/, "")
 ```
+### *SHOPIFY inStock selector*
+```
+inStock: $("inventory_quantity").fns("text").sum().matches(/^[1-9]/)
+```
 ### *SHOPIFY hasVariants selector*
 ```
 extraData.hasVariants: $("variants > sku").fns("text").fns("replace", /.*/, "1").sum().notMatches(/^1$/)
