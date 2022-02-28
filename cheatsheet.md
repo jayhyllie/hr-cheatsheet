@@ -74,6 +74,21 @@ Find customers parent element
 Add this to design:
 document.querySelector('#aw-box-{{ key }}').style.width=document.querySelector("#Content_Productlist").offsetWidth+"px";
 ```
+### *FREE SHIPPING USA*
+```
+var heading = jQuery(".aw-heading"),
+basketAmount = parseFloat( jQuery(".cart-total-wrapper .money").text().trim().split("$").pop().trim().replace(",", ".") );
+
+if( !isNaN(basketAmount) ) {
+    if(basketAmount < 50) {
+       var amountLeft = 50 - basketAmount;
+       heading.text("Add $"+ amountLeft.toFixed(2).replace(".00", "") +" to reach FREE shipping");
+    }
+    else {
+        heading.html("You've reached FREE shipping! <br>Others also bought");
+    }
+}
+```
 ### *If shipping price is within the Total Price*
 ```
 var basketAmount = 0;
