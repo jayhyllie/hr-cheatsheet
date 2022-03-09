@@ -64,6 +64,10 @@ url: $("hasProducts, url").text().replace(/^false.*/, "").replace(/^true/, "")
 title: $("isVisibleInMenu, name").fns("text").join("||").replace(/^0.*/, "").split("||").pop()
 ```
 ## *RECOMS*
+### *Category page NO BREADCRUMBS from customer*
+```
+https://addwish.com/supervisor/app/678784/websites/107e93d5-5ff6-4c75-896a-857b3f5df1b3/designs/edit/135110
+```
 ### *Category page don't show on more than 8 products and show not on filter active*
 ```
 .catalog-category-view:has(.item:eq(8)):not(:has(.filter-active)) .column.main .category-product-actions
