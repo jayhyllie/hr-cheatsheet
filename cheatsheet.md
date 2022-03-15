@@ -35,6 +35,10 @@ inStock: $("inventory_quantity").fns("text").sum().matches(/^[1-9]/)
 ```
 extraData.hasVariants: $("variants > sku").fns("text").fns("replace", /.*/, "1").sum().notMatches(/^1$/)
 ```
+### *SHOPIFY ORDER FEED remove if POS*
+```
+orderNumber: $("source_name, order_number").fns("text").join("||").replace(/^pos.*/, "").split("||").pop()
+```
 ### *Change image size*
 ```
 .replace(/(\.[a-z]{3,4}\?)/i, "_300x$1")
