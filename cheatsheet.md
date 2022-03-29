@@ -85,7 +85,7 @@ document.querySelector('#aw-box-{{ key }}').style.width=document.querySelector("
 ### *FREE SHIPPING USA*
 ```
 var heading = jQuery(".aw-heading"),
-basketAmount = parseFloat( jQuery(".cart-total-wrapper .money").text().trim().split("$").pop().trim().replace(",", ".") );
+basketAmount = parseFloat( jQuery(".cart-total-wrapper .money").text().trim().split("$").pop().trim().replace(",", "") );
 
 if( !isNaN(basketAmount) ) {
     if(basketAmount < 50) {
