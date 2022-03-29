@@ -225,6 +225,15 @@ setTimeout(function(){
  *Add code here*
 },1000)
 ```
+### *Add getCookie method to window object*
+```
+if(!window.getCookie){
+     window.getCookie = function(name) {
+          var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+          if (match) return match[2];
+     }
+}
+```
 ### *Make a diagonal line-through*
 ```
 .aw-oldPrice{
