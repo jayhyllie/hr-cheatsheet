@@ -234,6 +234,14 @@ if(!window.getCookie){
      }
 }
 ```
+### *How to add input fields to triggered email designs*
+```
+https://addwish.com/supervisor/triggeredemail/designEdit.html?designId=8924
+
+{# text priceColor = "#CA0303" #}
+
+<h3 style="color:{{ priceColor }};font-weight:700;"></h3>
+```
 ### *Make a diagonal line-through*
 ```
 .aw-oldPrice{
