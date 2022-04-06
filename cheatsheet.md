@@ -216,6 +216,15 @@ searchBtn.replaceWith(searchBtn.cloneNode(true));
     {% endfor %}
 </span>
 (Remove limit : 1, to show all hierachies)
+
+.hr-search-overlay-content-hierarchy-wrapper {
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: .9em;
+    color: #777;
+}
 https://explain.helloretail.com/DOum40Bd
 ```
 ## *RANDOM*
