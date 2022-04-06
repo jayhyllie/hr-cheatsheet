@@ -157,7 +157,21 @@ Array.from(document.querySelectorAll(".button-primary.button-icon")).pop().addEv
 sessionStorage.setItem("buyButtonClicked","true");
 });
 ```
-
+### *Free shipping Price Range Products in Cart*
+```
+1) Make a selector to grab the cart total: https://explain.helloretail.com/xQuqz0nn (make sure the price is formatted right).
+2) Call this variable "price": https://explain.helloretail.com/d5u9NeAY (the reason being, that this treats it as an actual number) in the box-selector-section.
+3) Use the variable "price" (which is now the crawled value from the basket page, and not "some value of products"), to set up conditions, like: a) "if below free shipping, do X", "if above, do Y".
+4) Use this, in the first section (where the price (value of basket) is still below free shipping), to specify, that the products found in this step, have a certain price-range:
+ 
+$price|freeShipping:495, 100
+The explanation of this would be:
+$price(this is still the crawled value of the basket-total)|freeShipping:495(here you set the treshold for when free shipping has been applied), 100(this is the margin, with witch the price are allowed to go the range).
+So put into a concrete example this:
+(200|freeShipping:495, 100)
+would mean "show products, that have a price between 195 and 395".
+like so: https://explain.helloretail.com/BluodB1q - the behaviour on the page should be like: https://explain.helloretail.com/6quZEB8k
+```
 ## *SEARCH*
 ### *Set up instant grid search*
 ```
