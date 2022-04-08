@@ -173,6 +173,34 @@ would mean "show products, that have a price between 195 and 395".
 like so: https://explain.helloretail.com/BluodB1q - the behaviour on the page should be like: https://explain.helloretail.com/6quZEB8k
 ```
 ## *SEARCH*
+### *MOBILE GRID SEARCH*
+```
+1. .hr-tab-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+2. .hr-overlay-search .hr-search-overlay-product {
+    padding: 10px;
+    position: relative;
+    background-color: #ffffff;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    flex-basis: 42%;
+    flex-direction: column;
+    display: flex;
+    margin: 5px auto;
+}
+3. .hr-row {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+4. .hr-tab-body[data-tab='category'] .hr-tab-wrapper {
+	display: block;
+}
+```
 ### *Set up instant grid search*
 ```
 change the "var input" to the right class
