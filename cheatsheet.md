@@ -3,7 +3,8 @@
 
 ### *Url Selector*
 ```
-$("html").parent()[0].location.href
+- $("html").parent()[0].location.href
+- $("link[rel='canonical']").attr("href")
 ```
 ### *HTML Unescape*
 ```
@@ -22,6 +23,10 @@ extraData.isOnSale: [$("main_variant > price").text(),$("main_variant > compare_
 extraData.saving: [[$("oldPrice").text(),
 $("price").first().text()].subtract().multiply(100),
 $("oldPrice").text()].divide().round().replace(/^/, "000").replace(/\d*(0\d{2})$/g, "$1")
+```
+### *Magento 2 out of stock if price is 0*
+```
+inStock: $("price, instock").text().matches(/^[^0].*(true)/)
 ```
 ### *DANDOMAIN sort out variants*
 ```
