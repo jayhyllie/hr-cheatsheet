@@ -185,6 +185,9 @@ like so: https://explain.helloretail.com/BluodB1q - the behaviour on the page sh
 	flex-wrap: wrap;
 	justify-content: center;
 }
+.hr-tab-body[data-tab='category'] .hr-tab-wrapper {
+	display: block;
+}
 2. .hr-overlay-search .hr-search-overlay-product {
     padding: 10px;
     position: relative;
@@ -201,10 +204,7 @@ like so: https://explain.helloretail.com/BluodB1q - the behaviour on the page sh
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-}
-4. .hr-tab-body[data-tab='category'] .hr-tab-wrapper {
-	display: block;
-}
+} 
 ```
 ### *Set up instant grid search*
 ```
