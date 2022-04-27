@@ -274,6 +274,20 @@ searchBtn.replaceWith(searchBtn.cloneNode(true));
 }
 https://explain.helloretail.com/DOum40Bd
 ```
+## *PAGES*
+### *Test pages div*
+```
+let html = `<div id="helloretail-category-page-624421fb2d64b76dbff35627" data-filters=" { &quot;hierarchies&quot;: [&quot;Overlocker&quot;, &quot;Bernina Overlocker&quot;] } "></div>`
+
+document.querySelector("SELECTOR TO BE POSITIONED RELATIVE TO").insertAdjacentHTML("beforebegin",html);
+
+The &quot; represents a literal quote: "
+But has to remain  &quot; in order for the html to recognize and format it correctly.
+
+Once above code has been run in the console of the browser, run the following piece of code (WHILE THE PAGES DRAFT IS ENABLED)
+
+ADDWISH_PARTNER_NS.api.reload()
+```
 ## *RANDOM*
 ### *Set Timeout*
 ```
