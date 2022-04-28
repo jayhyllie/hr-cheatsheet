@@ -52,6 +52,14 @@ orderNumber: $("source_name, order_number").fns("text").join("||").replace(/^pos
 ```
 .replace(/(\.[a-z]{3,4}\?)/i, "_300x$1")
 ```
+### *Adding imageType1 images, with a fallback to imageType2 images if the imageType1 does not exist*
+```
+<img src="{{ product.extraData.imageType1 }}" onerror="this.onerror=null;this.src='{{ product.extraData.imageType2 }}';">
+
+An example could be;
+imageType1 = http://domain/product/image.webp
+imageType2 = http://domain/product/image.png
+```
 ### *Change the image size on SMARTWEB webP*
 ```
 imgUrl: [$("g\\:image_link").text().replace(/(.*)\/.*$/, "$1"), $("item > g\\:image_link").text().split("/").pop().replace(/^/, "/_thumbs/")].join("").replace(/(.*)\./, "$1.w293.h293.fill.")
