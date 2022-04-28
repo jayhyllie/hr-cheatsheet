@@ -18,6 +18,10 @@ title: $("g\\:title, title").text().split("-")[0]
 ```
 extraData.isOnSale: [$("main_variant > price").text(),$("main_variant > compare_at_price, main_variant > price").first().text()].subtract().matches(/^-/)
 ```
+### *Percentage of original price*
+```
+extraData.percantageOfPrice: [$("sale_price").text(),$("price:last").text()].divide()
+```
 ### *SORT on largest saving*
 ```
 extraData.saving: [[$("oldPrice").text(),
