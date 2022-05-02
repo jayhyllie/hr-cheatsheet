@@ -351,3 +351,35 @@ https://www.toptal.com/designers/htmlarrows/arrows/
 ```
 46.137.110.51
 ```
+### *Mutation Observer example*
+```
+var awHeading = document.querySelector(".aw-heading");
+var basketAmount = parseFloat(document.querySelector("#CartTotal strong").textContent.trim().split("kr").shift().trim().replace(".", "").replace(",", "."));
+
+updateAwHeading();
+const observer = new MutationObserver(function(mutationsList, observer) {
+for(const mutation of mutationsList){
+if(mutation.type === "childList"){
+mutation.addedNodes.forEach(function(item){
+if(item.nodeName === "#text"){
+updateAwHeading();
+}
+})
+}
+}
+});
+observer.observe(document.querySelector("#AjaxCartSubtotal"), { childList: true, subtree: true });
+
+function updateAwHeading(){
+basketAmount = parseFloat(document.querySelector("#CartTotal strong").textContent.trim().split("kr").shift().trim().replace(".", "").replace(",", ".")); 
+if(!isNaN(basketAmount)){
+if(basketAmount < 500){
+var amountLeft = 500 - basketAmount;
+awHeading.textContent = "Køb for "+ amountLeft.toFixed(2).replace(".", ",").replace(",00", "") +" kr mere og få gratis fragt";
+}
+else{
+awHeading.textContent = "Du har opnået fri fragt! Andre kunder købte også";
+}
+}
+}
+```
