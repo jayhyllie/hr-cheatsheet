@@ -218,6 +218,72 @@ like so: https://explain.helloretail.com/BluodB1q - the behaviour on the page sh
 	width: 100%;
 } 
 ```
+### *Sort filters*
+```
+function sortFilters(container) {
+var filterListContainer = $(container);
+filterListContainer.find(".aw-filter-tag-title").each(function(e){
+var title_value = $(this).text().toLowerCase();
+var sort_value;
+
+if (title_value.match(/^\d/)){
+//starts with a number
+sort_value = title_value.replace(",",".");
+$(this).attr("sort-num", sort_value);
+}
+
+else if(title_value.match(/^one\ssize$/)){
+$(this).attr("sort-one-size", title_value);
+}
+
+else if(title_value.match(/^xs\d|^xs\s|^xs$|^xs\(|^xs\//)){
+$(this).attr("sort-xs", title_value);
+}
+
+else if(title_value.match(/^s\d|^s\s|^s$|^s\(|^s\//)){
+$(this).attr("sort-s", title_value);
+}
+
+else if(title_value.match(/^m\d|^m\s|^m$|^m\(|^m\//)){
+$(this).attr("sort-m", title_value);
+}
+else{
+//everything else
+$(this).attr("sort-char", title_value);
+}
+});
+
+//sort by number
+var numSortLabels = filterListContainer.find('label:has(.aw-filter-tag-title[sort-num])').sort(function(a, b) { return parseFloat($(a).find(".aw-filter-tag-title").attr("sort-num")) > parseFloat($(b).find(".aw-filter-tag-title").attr("sort-num")) ? 1 : -1; });
+
+// Sort by one size
+var charOneSizeSortLabels = filterListContainer.find('label:has(.aw-filter-tag-title[sort-one-size])').sort(function(a, b) { return $(a).find(".aw-filter-tag-title").attr("sort-one-size") > $(b).find(".aw-filter-tag-title").attr("sort-one-size") ? 1 : -1; });
+
+// Sort by xs
+var charExtraSmallSortLabels = filterListContainer.find('label:has(.aw-filter-tag-title[sort-xs])').sort(function(a, b) { return $(a).find(".aw-filter-tag-title").attr("sort-xs") > $(b).find(".aw-filter-tag-title").attr("sort-xs") ? 1 : -1; });
+
+// Sort by s
+var charSmallSortLabels = filterListContainer.find('label:has(.aw-filter-tag-title[sort-s])').sort(function(a, b) { return $(a).find(".aw-filter-tag-title").attr("sort-s") > $(b).find(".aw-filter-tag-title").attr("sort-s") ? 1 : -1; });
+
+// Sort by m
+var charMediumSortLabels = filterListContainer.find('label:has(.aw-filter-tag-title[sort-m])').sort(function(a, b) { return $(a).find(".aw-filter-tag-title").attr("sort-m") > $(b).find(".aw-filter-tag-title").attr("sort-m") ? 1 : -1; });
+
+//sort by character
+var charSortLabels = filterListContainer.find('label:has(.aw-filter-tag-title[sort-char])').sort(function(a, b) { return $(a).find(".aw-filter-tag-title").attr("sort-char") > $(b).find(".aw-filter-tag-title").attr("sort-char") ? 1 : -1; });
+
+var allLabels = [numSortLabels,charOneSizeSortLabels,charExtraSmallSortLabels,charSmallSortLabels,charMediumSortLabels,charSortLabels];
+var allLabelsMerged = [];
+
+allLabels.forEach(function(item) {
+$.merge(allLabelsMerged,item);
+});
+
+filterListContainer.append(allLabelsMerged);
+}
+
+// Calling the function should happen at the very end of the "searcher.yield.template(function(template,state))" method.** **
+sortFilters("div[data-filter='extraDataList.sizes'] .aw-filter-tag-list");
+```
 ### *Set up instant grid search*
 ```
 change the "var input" to the right class
