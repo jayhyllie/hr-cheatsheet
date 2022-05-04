@@ -366,6 +366,14 @@ Once above code has been run in the console of the browser, run the following pi
 
 ADDWISH_PARTNER_NS.api.reload()
 ```
+### *Hide irrelevant filters*
+```
+Example: Pandasia line 127 - 145 Pages Javascript.
+
+if(document.querySelectorAll("div[data-filter-name='Tilbud'] .aw-filter-tag-list label").length == "1"){
+document.querySelector(".aw-filter__single-wrapper[data-filter-name='Tilbud']").remove()
+};
+```
 ## *RANDOM*
 ### *Set Timeout*
 ```
