@@ -216,7 +216,10 @@ like so: https://explain.helloretail.com/BluodB1q - the behaviour on the page sh
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-} 
+}
+4. .hr-col-img {
+	flex-basis: 120px;
+}
 ```
 ### *Sort filters*
 ```
