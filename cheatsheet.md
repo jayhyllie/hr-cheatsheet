@@ -303,6 +303,12 @@ Then in the HTML :
 max-height: 100vh;
 overflow: scroll;
 ```
+### *Hide scrollbar from Embedded searches that are narrower than the viewport width*
+```
+.hr-overlay-search::-webkit-scrollbar {
+width:0!important;
+}
+```
 ### *Add filters in full search*
 ```
 dubuy.dk, from all templates!!
