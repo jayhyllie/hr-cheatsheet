@@ -383,6 +383,21 @@ if(document.querySelectorAll("div[data-filter-name='Tilbud'] .aw-filter-tag-list
 document.querySelector(".aw-filter__single-wrapper[data-filter-name='Tilbud']").remove()
 };
 ```
+### *Look for elements several times until found or until cap of attempts reached*
+```
+var timeCount = 0;
+var timeout = setInterval(() => {
+timeCount += 1;
+if(timeCount >= 5){
+clearInterval(timeout);
+
+}
+if (document.querySelector(".category-subheading") && Array.from(document.querySelectorAll(".m-breadcrumb li a span")).pop()) {
+clearInterval(timeout); 
+Do something if elements have been found
+}
+}, 100);
+```
 ## *RANDOM*
 ### *Set Timeout*
 ```
