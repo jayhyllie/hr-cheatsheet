@@ -28,6 +28,10 @@ extraData.saving: [[$("oldPrice").text(),
 $("price").first().text()].subtract().multiply(100),
 $("oldPrice").text()].divide().round().replace(/^/, "000").replace(/\d*(0\d{2})$/g, "$1")
 ```
+### *WooCommerce hierarchies to keywords*
+```
+keywords: [$("keywords").text(), $("sku:first").text(), $("hierarchies > hierarchy > category").fns("text").join(" ")].join(" ")
+```
 ### *Magento 2 out of stock if price is 0*
 ```
 inStock: $("price, instock").text().matches(/^[^0].*(true)/)
