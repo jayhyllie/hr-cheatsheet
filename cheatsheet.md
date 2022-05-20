@@ -366,6 +366,10 @@ searchBtn.replaceWith(searchBtn.cloneNode(true));
 https://explain.helloretail.com/DOum40Bd
 ```
 ## *PAGES*
+### *SHOPIFY Insert div*
+```
+Online store → Themes → Debut tab → Actions → Edit code → Layout folder → Collection-template.liquid → insert div right above own products container
+```
 ### *Test pages div*
 ```
 let html = `<div id="helloretail-category-page-624421fb2d64b76dbff35627" data-filters=" { &apos;hierarchies&apos;: [&apos;Overlocker&apos;, &apos;Bernina Overlocker&apos;] } "></div>`
