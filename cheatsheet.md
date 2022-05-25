@@ -369,6 +369,8 @@ https://explain.helloretail.com/DOum40Bd
 ### *SHOPIFY Insert div*
 ```
 Online store → Themes → Debut tab → Actions → Edit code → Layout folder → Collection-template.liquid → insert div right above own products container
+
+https://explain.helloretail.com/jkuX7JlW
 ```
 ### *Test pages div*
 ```
