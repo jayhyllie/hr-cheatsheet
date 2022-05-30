@@ -291,6 +291,20 @@ filterListContainer.append(allLabelsMerged);
 // Calling the function should happen at the very end of the "searcher.yield.template(function(template,state))" method.** **
 sortFilters("div[data-filter='extraDataList.sizes'] .aw-filter-tag-list");
 ```
+### *Hide/Show filter based on input*
+```
+Placement of snippet: last line in the function named "load_more_results"
+Notes: This works with Overlay out of the box. Just rename the data-filter to the given filter, and the matched value of the input-field to trigger the filter.
+
+var inputValue = document.querySelector(".hr-search > input").value
+var mistralFilterContainer = document.querySelector(".aw-filter__single-wrapper[data-filter='extraData.filterName']");
+
+if(document.querySelector(".hr-search > input").value.match(/.*TRIGGERWORD.*/i)){
+mistralFilterContainer.style.display = "block";
+} else {
+mistralFilterContainer.style.display = "none";
+}
+```
 ### *Set up instant grid search*
 ```
 change the "var input" to the right class
