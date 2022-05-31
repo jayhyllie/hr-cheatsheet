@@ -305,6 +305,18 @@ mistralFilterContainer.style.display = "block";
 mistralFilterContainer.style.display = "none";
 }
 ```
+### *Remove unwanted sorting ascending or descending values*
+```
+(Important → the value which should be removed should be named "THISSHOULDBEREMOVED" in the ascending or descending title)
+
+Example - Line 135 JavaScript Estella.nl
+
+document.querySelectorAll(".aw-sorting-tag-list label").forEach(function(item){
+if(item.textContent == "THISSHOULDBEREMOVED"){
+item.remove();
+}
+})
+```
 ### *Set up instant grid search*
 ```
 change the "var input" to the right class
