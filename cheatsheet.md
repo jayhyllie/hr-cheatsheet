@@ -317,6 +317,14 @@ item.remove();
 }
 })
 ```
+### *Remove customers page scroll when Embedded search is open*
+```
+.hr-search-disable-scroll{
+height:100vh!important;
+width:100vw!important;
+overflow:hidden!important;
+}
+```
 ### *Set up instant grid search*
 ```
 change the "var input" to the right class
