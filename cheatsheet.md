@@ -224,6 +224,9 @@ like so: https://explain.helloretail.com/BluodB1q - the behaviour on the page sh
 4. .hr-col-img {
 	flex-basis: 120px;
 }
+5. .hr-overlay-search > .hr-tabs > .hr-tab-content .hr-tab-header {
+	flex-basis: 100%;
+}
 ```
 ### *Sort filters*
 ```
