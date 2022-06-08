@@ -93,6 +93,22 @@ url: $("hasProducts, url").text().replace(/^false.*/, "").replace(/^true/, "")
 title: $("isVisibleInMenu, name").fns("text").join("||").replace(/^0.*/, "").split("||").pop()
 ```
 ## *RECOMS*
+### *Example of removing category box if filter is active*
+```
+document.querySelectorAll(".af_filter_content ul li input[type='checkbox']").forEach(function(item){
+    item.addEventListener("click",function(e){
+        setTimeout(function(){
+
+			if(window.location.href.includes("?")){
+				document.querySelector("#aw-box-{{ key }}").style.display='none';
+			}
+			else{
+				document.querySelector("#aw-box-{{ key }}").style.display='block';
+			}
+        },500)
+    })
+})
+```
 ### *Category page NO BREADCRUMBS from customer*
 ```
 https://addwish.com/supervisor/app/678784/websites/107e93d5-5ff6-4c75-896a-857b3f5df1b3/designs/edit/135110
