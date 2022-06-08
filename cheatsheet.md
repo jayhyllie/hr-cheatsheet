@@ -10,6 +10,10 @@
 ```
 .unescapeHtml().replace(/<[^>]*>/g, "")
 ```
+### *Based on child element content, select content from parent*
+```
+extraDataList.filterSize: $("options > options > name:contains('Størrelse')").parent().find("values[l='1']").fns("text")
+```
 ### *Remove from end of title*
 ```
 title: $("g\\:title, title").text().split("-")[0]
