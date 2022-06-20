@@ -466,6 +466,10 @@ Do something if elements have been found
 }, 100);
 ```
 ## *RANDOM*
+### *Check click event*
+```
+window.addEventListener("click", function(e){console.log(e.target)})
+```
 ### *Set Timeout*
 ```
 setTimeout(function(){
