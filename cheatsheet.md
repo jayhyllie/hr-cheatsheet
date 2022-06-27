@@ -495,6 +495,10 @@ fetch('https://core.helloretail.com/serve/pages/{key}',{
 }).then((res)=>{ return res.json() }).then((data)=>{ console.log(data) });
 ```
 ## *RANDOM*
+### *Enable debugging messages in console*
+```
+ADDWISH_PARTNER_NS.util.set_cookie("addwish-debug","true")
+```
 ### *Check click event*
 ```
 window.addEventListener("click", function(e){console.log(e.target)})
