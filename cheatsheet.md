@@ -465,6 +465,35 @@ Do something if elements have been found
 }
 }, 100);
 ```
+### *How to structure a Pages REST-API request url*
+```
+fetch('https://core.helloretail.com/serve/pages/{key}',{
+    "method":'POST',
+    "mode":'cors',
+    "credentials":'include',
+    "headers":{
+        'Content-Type':'application/json'
+    },
+    "body":JSON.stringify({
+        "url":'{url of the category page}',
+        "layout":true,
+        "firstLoad":true,
+        "trackingUserId":'{Hello retail id located in cookies on the webshop}',
+        "format":'json',
+        "params":{"hierarchies": ["Kampanjer","Høstens Favoritter"]},
+        "products": {
+            "start": 0,
+            "count": 50,
+            "filters": [
+                "brand:Jotunheim",
+            ],
+            "sorting": [
+                "title desc"
+            ]
+        }
+    })
+}).then((res)=>{ return res.json() }).then((data)=>{ console.log(data) });
+```
 ## *RANDOM*
 ### *Check click event*
 ```
