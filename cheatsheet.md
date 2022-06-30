@@ -59,6 +59,7 @@ orderNumber: $("source_name, order_number").fns("text").join("||").replace(/^pos
 ### *Change image size*
 ```
 .replace(/(\.[a-z]{3,4}\?)/i, "_300x$1")
+.replace(/(\.[a-z]{3,4})$/i, "$1.webp")
 ```
 ### *Adding imageType1 images, with a fallback to imageType2 images if the imageType1 does not exist*
 ```
@@ -76,6 +77,7 @@ imgUrl: [$("g\\:image_link").text().replace(/(.*)\/.*$/, "$1"), $("item > g\\:im
 ### *Remove from hierarchies*
 ````
 .fns("removeMatching", /Alla produkter/ig)
+.fns("join", "|||").removeMatching(/^home|mÊrker/i).fns("split", "|||")
 ````
 ### *Recom on last hierarchy not first*
 ```
