@@ -511,6 +511,13 @@ setTimeout(function(){
  *Add code here*
 },1000)
 ```
+### *JS Media Query*
+```
+if(window.matchMedia("(max-width: 960px)")){
+	// Don't activate on mobile
+	return;
+}
+```
 ### *Add getCookie method to window object*
 ```
 if(!window.getCookie){
