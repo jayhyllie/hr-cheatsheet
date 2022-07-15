@@ -250,6 +250,117 @@ like so: https://explain.helloretail.com/BluodB1q - the behaviour on the page sh
 	flex-basis: 100%;
 }
 ```
+### *Filter Sorting by Mikkel*
+```
+/* text */ var extraData_filters_to_sort = "length,buckle,width";
+/* text */ var extraDataList_filters_to_sort = "";
+/* boolean */ var ascending_filter_sorting = false;
+/* boolean */ var numbers_first_in_filters = true;
+function sortFilters(parentClass){
+var num = [];
+var alph = [];
+var xSizes = [];
+var xSizeIndex = 0;
+const parent = document.querySelector(parentClass);
+const divs = [...parent.querySelectorAll(parentClass+" label")];
+divs.forEach(function(div){div.remove();});
+divs.forEach(function(div){ 
+if(div.querySelector(".aw-filter-tag-title").innerText.match(/[^\d]*(\d+).*/)){
+num.push(div);
+}
+else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^one size$/)){
+div.setAttribute("sorting",0);
+xSizes.push(div);
+}
+else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^xxs$/)){
+div.setAttribute("sorting",1);
+xSizes.push(div);
+}
+else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^xs$/)){
+div.setAttribute("sorting",2);
+xSizes.push(div);
+}
+else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^s$/)){
+div.setAttribute("sorting",3);
+xSizes.push(div);
+}
+else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^m$/)){
+div.setAttribute("sorting",4);
+xSizes.push(div);
+}
+else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^l$/)){
+div.setAttribute("sorting",5);
+xSizes.push(div);
+}
+else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^xl$/)){
+div.setAttribute("sorting",6);
+xSizes.push(div);
+}
+else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^xxl$/)){
+div.setAttribute("sorting",7);
+xSizes.push(div);
+}
+else{
+alph.push(div);
+}
+});
+num.sort(function(a,b){
+if(ascending_filter_sorting){
+return a.innerText.replace(/[^\d]*(\d+).*/,"$1") - b.innerText.replace(/[^\d]*(\d+).*/,"$1");
+}
+else{
+return b.innerText.replace(/[^\d]*(\d+).*/,"$1") - a.innerText.replace(/[^\d]*(\d+).*/,"$1");
+}
+});
+alph.sort(function(a,b){
+if(ascending_filter_sorting){
+return (a.innerText.toLowerCase() > b.innerText.toLowerCase() ? 1 : -1);
+}
+else{
+return (b.innerText.toLowerCase() > a.innerText.toLowerCase() ? 1 : -1);
+}
+});
+xSizes.sort(function(a,b){
+if(ascending_filter_sorting){
+return a.getAttribute("sorting") - b.getAttribute("sorting");
+}
+else{
+return b.getAttribute("sorting") - a.getAttribute("sorting");
+}
+});
+if(numbers_first_in_filters){
+num.forEach(function(div){ parent.append(div); });
+xSizes.forEach(function(div){ parent.append(div); });
+alph.forEach(function(div){ parent.append(div); });
+}
+else{
+xSizes.forEach(function(div){ parent.append(div); });
+alph.forEach(function(div){ parent.append(div); });
+num.forEach(function(div){ parent.append(div); });
+}
+}
+
+extraData_filters_to_sort = extraData_filters_to_sort.split(",");
+if(extraData_filters_to_sort != ""){
+extraData_filters_to_sort.forEach(function(filter){
+
+var filterStructured = "[data-filter='extraData."+filter+"']";
+
+sortFilters(filterStructured+" .aw-filter-tag-list");
+});
+}
+
+extraDataList_filters_to_sort = extraDataList_filters_to_sort.split(";");
+if(extraDataList_filters_to_sort != ""){
+extraDataList_filters_to_sort.forEach(function(filter){
+
+var filterStructured = "[data-filter='extraDataList."+filter+"']";
+
+sortFilters(filterStructured+" .aw-filter-tag-list");
+});
+
+}
+```
 ### *Sort filters*
 ```
 function sortFilters(container) {
