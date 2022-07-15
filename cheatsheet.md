@@ -497,6 +497,21 @@ fetch('https://core.helloretail.com/serve/pages/{key}',{
 }).then((res)=>{ return res.json() }).then((data)=>{ console.log(data) });
 ```
 ## *RANDOM*
+### *Show different labels depending on day*
+```
+var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+var date = new Date();
+var day = weekday[date.getDay()];
+
+console.log(day)
+
+if(day == 'Friday' || 'Saturday' || 'Sunday'){
+ console.log("Weekend ")
+} else {
+console.log("Workday")
+}
+```
 ### *Enable debugging messages in console*
 ```
 ADDWISH_PARTNER_NS.util.set_cookie("addwish-debug","true")
