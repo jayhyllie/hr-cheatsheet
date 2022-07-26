@@ -73,6 +73,12 @@ imageType2 = http://domain/product/image.png
 ```
 imgUrl: [$("g\\:image_link").text().replace(/(.*)\/.*$/, "$1"), $("item > g\\:image_link").text().split("/").pop().replace(/^/, "/_thumbs/")].join("").replace(/(.*)\./, "$1.w293.h293.fill.")
 ```
+### *If previous price does not exist on non sale products*
+```
+extraData.discountPercentage: [[[$("previousprice").text(), $("price").text()].removeMatching(/^$/).shift(),
+                    $("price").text()].subtract().multiply(100),
+                    [$("previousprice").text(), $("price").text()].removeMatching(/^$/).shift()].divide().round().replace(/^/, "000").replace(/\d*(0\d{2})$/g, "$1")
+```
 ## *HIERARCHY*
 ### *Remove from hierarchies*
 ````
@@ -580,7 +586,7 @@ Do something if elements have been found
 ```
 ### *How to structure a Pages REST-API request url*
 ```
-fetch('https://core.helloretail.com/serve/pages/{key}',{
+fetch('https://core.helloretail.com/serve/{key}',{
     "method":'POST',
     "mode":'cors',
     "credentials":'include',
@@ -593,17 +599,20 @@ fetch('https://core.helloretail.com/serve/pages/{key}',{
         "firstLoad":true,
         "trackingUserId":'{Hello retail id located in cookies on the webshop}',
         "format":'json',
-        "params":{"hierarchies": ["Kampanjer","Høstens Favoritter"]},
+        "params":{
+            "filters":"{'hierarchies':['Fottøy','Damesko']}"
+        },
         "products": {
             "start": 0,
-            "count": 50,
-            "filters": [
-                "brand:Jotunheim",
+            "count": 4000,
+            "filters":[
+                "price:100,300",
+                "brand:Hummel",
             ],
-            "sorting": [
+            "sorting":[
                 "title desc"
-            ]
-        }
+            ],
+        },
     })
 }).then((res)=>{ return res.json() }).then((data)=>{ console.log(data) });
 ```
