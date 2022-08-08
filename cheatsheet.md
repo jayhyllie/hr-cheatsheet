@@ -569,6 +569,15 @@ if(document.querySelectorAll("div[data-filter-name='Tilbud'] .aw-filter-tag-list
 document.querySelector(".aw-filter__single-wrapper[data-filter-name='Tilbud']").remove()
 };
 ```
+### *Remove irrelevant filters*
+```
+var custom_product_count = content.products.count;
+if(custom_product_count > 0){
+	if(document.querySelector("#maincontent .column.main #layer-product-list")){
+		document.querySelector("#maincontent .column.main #layer-product-list").remove();
+	}
+}
+```
 ### *Look for elements several times until found or until cap of attempts reached*
 ```
 var timeCount = 0;
