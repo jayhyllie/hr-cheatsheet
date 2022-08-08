@@ -32,7 +32,7 @@ extraData.saving: [[$("oldPrice").text(),
 $("price").first().text()].subtract().multiply(100),
 $("oldPrice").text()].divide().round().replace(/^/, "000").replace(/\d*(0\d{2})$/g, "$1")
 ```
-### *Number betwween 1-100*
+### *Number between 1-100*
 ```
 .matches(/^[1-9][0-9]?$|^100$/)
 ```
