@@ -569,7 +569,7 @@ if(document.querySelectorAll("div[data-filter-name='Tilbud'] .aw-filter-tag-list
 document.querySelector(".aw-filter__single-wrapper[data-filter-name='Tilbud']").remove()
 };
 ```
-### *Remove irrelevant filters*
+### *Remove customers product list*
 ```
 var custom_product_count = content.products.count;
 if(custom_product_count > 0){
