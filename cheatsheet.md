@@ -582,6 +582,10 @@ if(custom_product_count > 0){
 	}
 }
 ```
+### *Structuring extraDataList in Pages data-filters attribute*
+```
+data-filters=' { "extraDataList.categoryIds": "619" }'
+```
 ### *Look for elements several times until found or until cap of attempts reached*
 ```
 var timeCount = 0;
