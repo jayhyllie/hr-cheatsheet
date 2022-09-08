@@ -552,6 +552,16 @@ Online store → Themes → Debut tab → Actions → Edit code → Layout folde
 
 https://explain.helloretail.com/jkuX7JlW
 ```
+### *SHOPIFY Automatic sorting on newest by date*
+```
+document.querySelector("label input[value='created desc']").parentElement.style.order = -1;
+
+	if( window.location.pathname === '/collections/nyheder' || window.location.pathname === '/collections/nyheder-women') {
+		if( $(".aw-sorting-tag-list label.selected:has(input[value='created desc'])").length === 0 && $(".aw-sorting-tag-list label.selected").length === 0 ) {
+			$(".aw-sorting-tag-list label:has(input[value='created desc'])").trigger("click");
+		}
+	}
+```
 ### *Test pages div*
 ```
 let html = `<div id="helloretail-category-page-624421fb2d64b76dbff35627" data-filters=" { &apos;hierarchies&apos;: [&apos;Overlocker&apos;, &apos;Bernina Overlocker&apos;] } "></div>`
