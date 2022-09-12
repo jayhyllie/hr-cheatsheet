@@ -260,6 +260,16 @@ like so: https://explain.helloretail.com/BluodB1q - the behaviour on the page sh
 	flex-basis: 100%;
 }
 ```
+### *Add redirects in grid search*
+```
+Add to the top
+import "search_redirects";
+
+Add above engine_options
+document.querySelector(".aw-search-input").addEventListener('keyup', (event) => {
+search_redirects.match_and_go(event.target.value, key)
+});
+```
 ### *Filter Sorting by Mikkel*
 ```
 /* text */ var extraData_filters_to_sort = "length,buckle,width";
