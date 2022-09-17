@@ -654,6 +654,11 @@ fetch('https://core.helloretail.com/serve/{key}',{
 }).then((res)=>{ return res.json() }).then((data)=>{ console.log(data) });
 ```
 ## *RANDOM*
+### *LipScore Rating*
+```
+https://explain.helloretail.com/WnuDrbGL
+https://explain.helloretail.com/X6uQdooR
+```
 ### *Show different labels depending on day*
 ```
 var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
