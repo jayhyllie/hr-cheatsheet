@@ -105,6 +105,15 @@ url: $("hasProducts, url").text().replace(/^false.*/, "").replace(/^true/, "")
 title: $("isVisibleInMenu, name").fns("text").join("||").replace(/^0.*/, "").split("||").pop()
 ```
 ## *RECOMS*
+### *ForLoop for sizes in stock*
+```
+{% for size in product.extraDataList.sizes %}
+	{% assign index = forloop.index0 %}
+	{% if product.extraDataList.stock[index] != "0" %}
+		<span>{{ size }}</span>
+	{% endif %}
+{% endfor %}
+```
 ### *Example of removing category box if filter is active*
 ```
 document.querySelectorAll(".af_filter_content ul li input[type='checkbox']").forEach(function(item){
