@@ -780,3 +780,55 @@ awHeading.textContent = "Du har opnået fri fragt! Andre kunder købte også";
 }
 }
 ```
+## *Regex (Victor edition)*
+### *Remove HTML from string*
+```js
+.replace(/<[^>]*>/g, "")
+```
+
+### *Does string contain anything? (Ex are there variants? See Boldliving.se)*
+```js
+.matches(/^([\s\S])/)
+```
+
+### *Grab the value of a matching attribute (live on performancegear.dk):*
+```js 
+extraDataList.colors: $("attributes > attribute[name=pa_color] > attributeValue").fns("text")
+```
+
+### *Grab a value from a heriarchy, by checking if it contains string (live on luksusbaby.dk )*
+```js
+extraData.extraBrand: $("hierarchies[l='1']:contains(Mærker) > :last").text()
+```
+### *Use a stock-image IF NO IMAGE available (live on ljusbutiken.se)* 
+```js
+imgUrl: $("g\\:image_link").text().replace("", "https://www.ljusbutik.se/sv/images/image-missing-12.png|").split("|").pop()
+```
+
+### *Add something if the field is empty, ex placeholder IMG.*
+```js
+imgUrl: $("imgurl").text().replace(/^$/, "https://shop11399.hstatic.dk/upload_dir/pics/placeholders/aa2c4d4c6f4b2e03ed8ea29601d848d4.png")
+```
+
+### *Replace image size, mainly Shopify, but could be refitted for other feeds.*
+```js
+.replace(/(\.[a-z]{3,4}\?)/i, "_300x$1")
+```
+Way better than using
+```js
+// DO NOT USE -> .replace(".jpg", "_300x.jpg")
+```
+
+### *Remove URL if other selector is certain word*
+```js
+url: $("hierarchies > hierarchy > category:contains(Uncategorized), url").text().replace(/^Uncategorized.*/, "")
+```
+Alt, better regex way. If looking for 1 letter or number
+```js
+url: $("price, url").text().replace(/^0.*/, "").replace(/.*(http)/, "$1")
+```
+
+### *Remove everything from an array that **isn't/don't** match this:* 
+```js
+.removeMatching(/^(?!steel||titanium|titan|).*/gi)
+```
