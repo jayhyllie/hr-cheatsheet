@@ -279,182 +279,329 @@ document.querySelector(".aw-search-input").addEventListener('keyup', (event) => 
 search_redirects.match_and_go(event.target.value, key)
 });
 ```
-### *Filter Sorting by Mikkel*
+### *Filter Sorting DESKTOP by Mikkel*
 ```
-/* text */ var extraData_filters_to_sort = "length,buckle,width";
-/* text */ var extraDataList_filters_to_sort = "";
-/* boolean */ var ascending_filter_sorting = false;
-/* boolean */ var numbers_first_in_filters = true;
-function sortFilters(parentClass){
-var num = [];
-var alph = [];
-var xSizes = [];
-var xSizeIndex = 0;
-const parent = document.querySelector(parentClass);
-const divs = [...parent.querySelectorAll(parentClass+" label")];
-divs.forEach(function(div){div.remove();});
-divs.forEach(function(div){ 
-if(div.querySelector(".aw-filter-tag-title").innerText.match(/[^\d]*(\d+).*/)){
-num.push(div);
+###Function
+/* text */ var desktop_default_filters_to_sort = ""; // =asc or =desc to control the individual filters sorting directive.
+/* text */ var desktop_extraData_filters_to_sort = "length,buckle,width=desc"; // =asc or =desc to control the individual filters sorting directive.
+/* text */ var desktop_extraDataList_filters_to_sort = ""; // =asc or =desc to control the individual filters sorting directive.
+/* text */ var desktop_add_to_assorted_filters_list = ""; // add label names here in the exact order that they should be sorted in (this will priority sort the provided label names and won't be sorted numerically or alphabetical).
+desktop_default_filters_to_sort = desktop_default_filters_to_sort.split(",");
+desktop_extraData_filters_to_sort = desktop_extraData_filters_to_sort.split(",");
+desktop_extraDataList_filters_to_sort = desktop_extraDataList_filters_to_sort.split(",");
+desktop_add_to_assorted_filters_list = desktop_add_to_assorted_filters_list.toLowerCase().split(",");
+/* boolean */ var desktop_ascending_filter_sorting = true; // global sorting directive used if no =asc / =desc sorting directive is present for the individual filter.
+/* boolean */ var desktop_numbers_first_in_filters = true; // control whether the labels considered to be numerical values should be shown before or after the alphabetical labels.
+/* boolean */ var desktop_console_debug = false;
+/* text */ var desktop_filter_title_start_with_number_or_contain_number_or_only_number = "start_with_number".toLowerCase(); // start_with_number / contain_number / only_number: control when a the labels in filter dropdowns should be considered numerical.
+function sortFiltersDesktop(parentClass,sortingDirective){
+console.time(`${parentClass} filtering took`);
+var numDesktop = [];
+var alphDesktop = [];
+var assortedDesktop = [];
+if(!document.querySelector(parentClass)){
+if(desktop_console_debug){
+console.log(`"${parentClass}" is not a valid filter selector and will not be sorted.`);
 }
-else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^one size$/)){
-div.setAttribute("sorting",0);
-xSizes.push(div);
+return;
 }
-else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^xxs$/)){
-div.setAttribute("sorting",1);
-xSizes.push(div);
+const parentDesktop = document.querySelector(parentClass);
+var divsDesktop;
+
+sortingDirective ? parentDesktop.setAttribute("sorting-directive",sortingDirective) : parentDesktop.setAttribute("sorting-directive","default");
+parentClass.includes("hierarchies") ? divsDesktop = [...parentDesktop.querySelectorAll(`${parentClass} li`)] : divsDesktop = [...parentDesktop.querySelectorAll(`${parentClass} label`)];
+
+divsDesktop.forEach(function(label) {
+var titleDesktop = label.querySelector(".aw-filter-tag-title").textContent.trim();
+if(desktop_add_to_assorted_filters_list != ""){
+var index = desktop_add_to_assorted_filters_list.indexOf(titleDesktop.toLowerCase());
+if(index != -1){  
+label.setAttribute("user-sorting",index);
 }
-else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^xs$/)){
-div.setAttribute("sorting",2);
-xSizes.push(div);
+};
+if(label.hasAttribute("user-sorting")){
+assortedDesktop.push(label);
 }
-else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^s$/)){
-div.setAttribute("sorting",3);
-xSizes.push(div);
+else if((titleDesktop.match(/[^\d]*(\d+).*/) && desktop_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number") || (titleDesktop.match(/^(\d+).*/) && desktop_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number") || (titleDesktop.match(/^\d+$/) && desktop_filter_title_start_with_number_or_contain_number_or_only_number == "only_number")){
+if(desktop_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number"){
+label.setAttribute("num-sorting",titleDesktop.replace(/^(\d+).*/,"$1"));
+numDesktop.push(label);
 }
-else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^m$/)){
-div.setAttribute("sorting",4);
-xSizes.push(div);
-}
-else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^l$/)){
-div.setAttribute("sorting",5);
-xSizes.push(div);
-}
-else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^xl$/)){
-div.setAttribute("sorting",6);
-xSizes.push(div);
-}
-else if(div.querySelector(".aw-filter-tag-title").innerText.toLowerCase().match(/^xxl$/)){
-div.setAttribute("sorting",7);
-xSizes.push(div);
+else if(desktop_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number"){
+label.setAttribute("num-sorting",titleDesktop.replace(/[^\d]*(\d+).*/,"$1"));
+numDesktop.push(label);
 }
 else{
-alph.push(div);
+label.setAttribute("num-sorting",titleDesktop);
+numDesktop.push(label);
 }
-});
-num.sort(function(a,b){
-if(ascending_filter_sorting){
-return a.innerText.replace(/[^\d]*(\d+).*/,"$1") - b.innerText.replace(/[^\d]*(\d+).*/,"$1");
 }
 else{
-return b.innerText.replace(/[^\d]*(\d+).*/,"$1") - a.innerText.replace(/[^\d]*(\d+).*/,"$1");
+label.setAttribute("alph-sorting",titleDesktop.replace(/\d+/,""));
+alphDesktop.push(label);
 }
 });
-alph.sort(function(a,b){
-if(ascending_filter_sorting){
-return (a.innerText.toLowerCase() > b.innerText.toLowerCase() ? 1 : -1);
+
+numDesktop.sort(function(a,b){
+if(sortingDirective){
+if(sortingDirective == "asc"){
+return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
 }
 else{
-return (b.innerText.toLowerCase() > a.innerText.toLowerCase() ? 1 : -1);
+return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
 }
-});
-xSizes.sort(function(a,b){
-if(ascending_filter_sorting){
-return a.getAttribute("sorting") - b.getAttribute("sorting");
 }
 else{
-return b.getAttribute("sorting") - a.getAttribute("sorting");
-}
-});
-if(numbers_first_in_filters){
-num.forEach(function(div){ parent.append(div); });
-xSizes.forEach(function(div){ parent.append(div); });
-alph.forEach(function(div){ parent.append(div); });
+if(desktop_ascending_filter_sorting){
+return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
 }
 else{
-xSizes.forEach(function(div){ parent.append(div); });
-alph.forEach(function(div){ parent.append(div); });
-num.forEach(function(div){ parent.append(div); });
+return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
 }
 }
+});
+alphDesktop.sort(function(a,b){
+if(sortingDirective){
+if(sortingDirective == "asc"){
+return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+}
+else{
+return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+}
+}
+else{
+if(desktop_ascending_filter_sorting){
+return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+}
+else{
+return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+}
+}
+});
+assortedDesktop.sort(function(a,b){
+if(sortingDirective){
+if(sortingDirective == "asc"){
+return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
+}
+else{
+return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
+}
+}
+else{
+if(desktop_ascending_filter_sorting){
+return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
+}
+else{
+return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
+}
+}
+});
+if(desktop_numbers_first_in_filters){
+assortedDesktop.forEach(function(div){ parentDesktop.append(div); });
+numDesktop.forEach(function(div){ parentDesktop.append(div); });
+alphDesktop.forEach(function(div){ parentDesktop.append(div); });
+}
+else{
+assortedDesktop.forEach(function(div){ parentDesktop.append(div); });
+alphDesktop.forEach(function(div){ parentDesktop.append(div); });
+numDesktop.forEach(function(div){ parentDesktop.append(div); });
+}
+console.timeEnd(`${parentClass} filtering took`);
+}
 
-extraData_filters_to_sort = extraData_filters_to_sort.split(",");
-if(extraData_filters_to_sort != ""){
-extraData_filters_to_sort.forEach(function(filter){
-
-var filterStructured = "[data-filter='extraData."+filter+"']";
-
-sortFilters(filterStructured+" .aw-filter-tag-list");
+###Invocation
+if(desktop_default_filters_to_sort != ""){
+desktop_default_filters_to_sort.forEach(function(filter){
+var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
+var filter = filter.includes("=") ? filter.split("=").shift() : filter;
+var filterStructured = `[data-filter='${filter}']`;
+filter == "hierarchies" ? sortFiltersDesktop(`${filterStructured} .aw-filter-list`,sortingDirective) : sortFiltersDesktop(`${filterStructured} .aw-filter-tag-list`,sortingDirective);
 });
 }
 
-extraDataList_filters_to_sort = extraDataList_filters_to_sort.split(";");
-if(extraDataList_filters_to_sort != ""){
-extraDataList_filters_to_sort.forEach(function(filter){
-
-var filterStructured = "[data-filter='extraDataList."+filter+"']";
-
-sortFilters(filterStructured+" .aw-filter-tag-list");
+if(desktop_extraData_filters_to_sort != ""){
+desktop_extraData_filters_to_sort.forEach(function(filter){
+var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
+var filter = filter.includes("=") ? filter.split("=").shift() : filter;
+var filterStructured = `[data-filter='extraData.${filter}']`;
+sortFiltersDesktop(`${filterStructured} .aw-filter-tag-list`,sortingDirective);
 });
-
 }
+
+if(desktop_extraDataList_filters_to_sort != ""){
+desktop_extraDataList_filters_to_sort.forEach(function(filter){
+var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
+var filter = filter.includes("=") ? filter.split("=").shift() : filter;
+var filterStructured = `[data-filter='extraDataList.${filter}']`;
+sortFiltersDesktop(`${filterStructured} .aw-filter-tag-list`,sortingDirective);
+});
+}
+
+###Positioning
+
+Function : https://explain.helloretail.com/X6uR6R0w
+Invocation : https://explain.helloretail.com/L1uXwXNv
 ```
-### *Sort filters*
+### *Sort filters MOBILE by Mikkel*
 ```
-function sortFilters(container) {
-var filterListContainer = $(container);
-filterListContainer.find(".aw-filter-tag-title").each(function(e){
-var title_value = $(this).text().toLowerCase();
-var sort_value;
-
-if (title_value.match(/^\d/)){
-//starts with a number
-sort_value = title_value.replace(",",".");
-$(this).attr("sort-num", sort_value);
+###Function
+/* text */ var mobile_default_filters_to_sort = "brand,hierarchies";
+/* text */ var mobile_extraData_filters_to_sort = "";
+/* text */ var mobile_extraDataList_filters_to_sort = "size=desc,color=asc";
+/* text */ var mobile_add_to_assorted_filters_list = "36,42";
+mobile_default_filters_to_sort = mobile_default_filters_to_sort.split(",");
+mobile_extraData_filters_to_sort = mobile_extraData_filters_to_sort.split(",");
+mobile_extraDataList_filters_to_sort = mobile_extraDataList_filters_to_sort.split(",");
+mobile_add_to_assorted_filters_list = mobile_add_to_assorted_filters_list.toLowerCase().split(",");
+/* boolean */ var mobile_ascending_filter_sorting = true;
+/* boolean */ var mobile_numbers_first_in_filters = true;
+/* boolean */ var mobile_console_debug = false;
+/* text */ var mobile_filter_title_start_with_number_or_contain_number_or_only_number = "only_number".toLowerCase();
+function sortFiltersMobile(parentClass,sortingDirective){
+var numMobile = [];
+var alphMobile = [];
+var assortedMobile = [];
+if(!document.querySelector(parentClass)){
+if(mobile_console_debug){
+console.log(`"${parentClass}" is not a valid filter selector and will not be sorted.`);
 }
-
-else if(title_value.match(/^one\ssize$/)){
-$(this).attr("sort-one-size", title_value);
+return;
 }
+const parentMobile = document.querySelector(parentClass);
+var divsMobile;
 
-else if(title_value.match(/^xs\d|^xs\s|^xs$|^xs\(|^xs\//)){
-$(this).attr("sort-xs", title_value);
+sortingDirective ? parentMobile.setAttribute("sorting-directive",sortingDirective) : parentMobile.setAttribute("sorting-directive","default");
+parentClass.includes("hierarchies") ? divsMobile = [...parentMobile.querySelectorAll(`${parentClass} li`)] : divsMobile = [...parentMobile.querySelectorAll(`${parentClass} label`)];
+
+divsMobile.forEach(function(label) {
+var titleMobile = label.querySelector(".aw-filter-tag-title").textContent.trim();
+if(mobile_add_to_assorted_filters_list != ""){
+var index = mobile_add_to_assorted_filters_list.indexOf(titleMobile.toLowerCase());
+if(index != -1){  
+label.setAttribute("user-sorting",index);
 }
-
-else if(title_value.match(/^s\d|^s\s|^s$|^s\(|^s\//)){
-$(this).attr("sort-s", title_value);
+};
+if(label.hasAttribute("user-sorting")){
+assortedMobile.push(label);
 }
-
-else if(title_value.match(/^m\d|^m\s|^m$|^m\(|^m\//)){
-$(this).attr("sort-m", title_value);
+else if((titleMobile.match(/[^\d]*(\d+).*/) && mobile_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number") || (titleMobile.match(/^(\d+).*/) && mobile_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number") || (titleMobile.match(/^\d+$/) && mobile_filter_title_start_with_number_or_contain_number_or_only_number == "only_number")){
+if(mobile_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number"){
+label.setAttribute("num-sorting",titleMobile.replace(/^(\d+).*/,"$1"));
+numMobile.push(label);
+}
+else if(mobile_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number"){
+label.setAttribute("num-sorting",titleMobile.replace(/[^\d]*(\d+).*/,"$1"));
+numMobile.push(label);
 }
 else{
-//everything else
-$(this).attr("sort-char", title_value);
+label.setAttribute("num-sorting",titleMobile);
+numMobile.push(label);
+}
+}
+else{
+label.setAttribute("alph-sorting",titleMobile.replace(/\d+/,""));
+alphMobile.push(label);
 }
 });
 
-//sort by number
-var numSortLabels = filterListContainer.find('label:has(.aw-filter-tag-title[sort-num])').sort(function(a, b) { return parseFloat($(a).find(".aw-filter-tag-title").attr("sort-num")) > parseFloat($(b).find(".aw-filter-tag-title").attr("sort-num")) ? 1 : -1; });
-
-// Sort by one size
-var charOneSizeSortLabels = filterListContainer.find('label:has(.aw-filter-tag-title[sort-one-size])').sort(function(a, b) { return $(a).find(".aw-filter-tag-title").attr("sort-one-size") > $(b).find(".aw-filter-tag-title").attr("sort-one-size") ? 1 : -1; });
-
-// Sort by xs
-var charExtraSmallSortLabels = filterListContainer.find('label:has(.aw-filter-tag-title[sort-xs])').sort(function(a, b) { return $(a).find(".aw-filter-tag-title").attr("sort-xs") > $(b).find(".aw-filter-tag-title").attr("sort-xs") ? 1 : -1; });
-
-// Sort by s
-var charSmallSortLabels = filterListContainer.find('label:has(.aw-filter-tag-title[sort-s])').sort(function(a, b) { return $(a).find(".aw-filter-tag-title").attr("sort-s") > $(b).find(".aw-filter-tag-title").attr("sort-s") ? 1 : -1; });
-
-// Sort by m
-var charMediumSortLabels = filterListContainer.find('label:has(.aw-filter-tag-title[sort-m])').sort(function(a, b) { return $(a).find(".aw-filter-tag-title").attr("sort-m") > $(b).find(".aw-filter-tag-title").attr("sort-m") ? 1 : -1; });
-
-//sort by character
-var charSortLabels = filterListContainer.find('label:has(.aw-filter-tag-title[sort-char])').sort(function(a, b) { return $(a).find(".aw-filter-tag-title").attr("sort-char") > $(b).find(".aw-filter-tag-title").attr("sort-char") ? 1 : -1; });
-
-var allLabels = [numSortLabels,charOneSizeSortLabels,charExtraSmallSortLabels,charSmallSortLabels,charMediumSortLabels,charSortLabels];
-var allLabelsMerged = [];
-
-allLabels.forEach(function(item) {
-$.merge(allLabelsMerged,item);
+numMobile.sort(function(a,b){
+if(sortingDirective){
+if(sortingDirective == "asc"){
+return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
+}
+else{
+return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
+}
+}
+else{
+if(mobile_ascending_filter_sorting){
+return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
+}
+else{
+return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
+}
+}
 });
-
-filterListContainer.append(allLabelsMerged);
+alphMobile.sort(function(a,b){
+if(sortingDirective){
+if(sortingDirective == "asc"){
+return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+}
+else{
+return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+}
+}
+else{
+if(mobile_ascending_filter_sorting){
+return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+}
+else{
+return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+}
+}
+});
+assortedMobile.sort(function(a,b){
+if(sortingDirective){
+if(sortingDirective == "asc"){
+return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
+}
+else{
+return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
+}
+}
+else{
+if(mobile_ascending_filter_sorting){
+return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
+}
+else{
+return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
+}
 }
 
-// Calling the function should happen at the very end of the "searcher.yield.template(function(template,state))" method.** **
-sortFilters("div[data-filter='extraDataList.sizes'] .aw-filter-tag-list");
+});
+if(mobile_numbers_first_in_filters){
+assortedMobile.forEach(function(div){ parentMobile.append(div); });
+numMobile.forEach(function(div){ parentMobile.append(div); });
+alphMobile.forEach(function(div){ parentMobile.append(div); });
+}
+else{
+assortedMobile.forEach(function(div){ parentMobile.append(div); });
+alphMobile.forEach(function(div){ parentMobile.append(div); });
+numMobile.forEach(function(div){ parentMobile.append(div); });
+}
+}
+
+###Invocation
+if(mobile_default_filters_to_sort != ""){
+mobile_default_filters_to_sort.forEach(function(filter){
+var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
+var filter = filter.includes("=") ? filter.split("=").shift() : filter;
+var filterStructured = `.hr-search-overlay-filter-wrap[data-filter='${filter}']`;
+filter == "hierarchies" ? sortFiltersMobile(`${filterStructured} .aw-filter-list`,sortingDirective) : sortFiltersMobile(`${filterStructured} .aw-filter-tag-list`,sortingDirective);
+});
+}
+
+if(mobile_extraData_filters_to_sort != ""){
+mobile_extraData_filters_to_sort.forEach(function(filter){
+var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
+var filter = filter.includes("=") ? filter.split("=").shift() : filter;
+var filterStructured = `.hr-search-overlay-filter-wrap[data-filter='extraData.${filter}']`;
+sortFiltersMobile(`${filterStructured} .aw-filter-tag-list`,sortingDirective);
+});
+}
+
+if(mobile_extraDataList_filters_to_sort != ""){
+mobile_extraDataList_filters_to_sort.forEach(function(filter){
+var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
+var filter = filter.includes("=") ? filter.split("=").shift() : filter;
+var filterStructured = `.hr-search-overlay-filter-wrap[data-filter='extraDataList.${filter}']`;
+sortFiltersMobile(`${filterStructured} .aw-filter-tag-list`,sortingDirective);
+});
+}
+
+Function : https://explain.helloretail.com/xQuw5wvd
+Invocation 1 : https://explain.helloretail.com/7Ku6r6R6
+Invocation 2 : https://explain.helloretail.com/JruoBovz
 ```
 ### *Hide/Show filter based on input*
 ```
