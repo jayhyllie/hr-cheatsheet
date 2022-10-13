@@ -954,7 +954,7 @@ imgUrl: $("g\\:image_link").text().replace("", "https://www.ljusbutik.se/sv/imag
 ```
 
 ### *Add something if the field is empty, ex placeholder IMG.*
-```jsjs
+```js
 imgUrl: $("imgurl").text().replace(/^$/, "https://shop11399.hstatic.dk/upload_dir/pics/placeholders/aa2c4d4c6f4b2e03ed8ea29601d848d4.png")
 ```
 
