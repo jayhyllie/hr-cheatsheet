@@ -2,71 +2,71 @@
 ## *FeedStuff*
 
 ### *Url Selector*
-```
+```js
 - $("html").parent()[0].location.href
 - $("link[rel='canonical']").attr("href")
 ```
 ### *HTML Unescape*
-```
+```js
 .unescapeHtml().replace(/<[^>]*>/g, "")
 ```
 ### *Based on child element content, select content from parent*
-```
+```js
 extraDataList.filterSize: $("options > options > name:contains('Størrelse')").parent().find("values[l='1']").fns("text")
 ```
 ### *Remove from end of title*
-```
+```js
 title: $("g\\:title, title").text().split("-")[0]
 ```
 ### *extraData to get products on sale*
-```
+```js
 extraData.isOnSale: [$("main_variant > price").text(),$("main_variant > compare_at_price, main_variant > price").first().text()].subtract().matches(/^-/)
 ```
 ### *Percentage of original price*
-```
+```js
 extraData.percantageOfPrice: [$("sale_price").text(),$("price:last").text()].divide()
 ```
 ### *SORT on largest saving*
-```
+```js
 extraData.saving: [[$("oldPrice").text(),
 $("price").first().text()].subtract().multiply(100),
 $("oldPrice").text()].divide().round().replace(/^/, "000").replace(/\d*(0\d{2})$/g, "$1")
 ```
 ### *Number between 1-100*
-```
+```js
 .matches(/^[1-9][0-9]?$|^100$/)
 ```
 ### *WooCommerce hierarchies to keywords*
-```
+```js
 keywords: [$("keywords").text(), $("sku:first").text(), $("hierarchies > hierarchy > category").fns("text").join(" ")].join(" ")
 ```
 ### *Magento 2 out of stock if price is 0*
-```
+```js
 inStock: $("price, instock").text().matches(/^[^0].*(true)/)
 ```
 ### *DANDOMAIN sort out variants*
-```
+```js
 $("items > name, isVariantMaster").text().replace(/true$/, "").replace(/.*false$/, "")
 ```
 ### *SHOPIFY inStock selector*
-```
+```js
 inStock: $("inventory_quantity").fns("text").sum().matches(/^[1-9]/)
 ```
 ### *SHOPIFY hasVariants selector*
-```
+```js
 extraData.hasVariants: $("variants > sku").fns("text").fns("replace", /.*/, "1").sum().notMatches(/^1$/)
 ```
 ### *SHOPIFY ORDER FEED remove if POS*
-```
+```js
 orderNumber: $("source_name, order_number").fns("text").join("||").replace(/^pos.*/, "").split("||").pop()
 ```
 ### *Change image size*
-```
+```js
 .replace(/(\.[a-z]{3,4}\?)/i, "_300x$1")
 .replace(/(\.[a-z]{3,4})$/i, "$1.webp")
 ```
 ### *Adding imageType1 images, with a fallback to imageType2 images if the imageType1 does not exist*
-```
+```html
 <img src="{{ product.extraData.imageType1 }}" onerror="this.onerror=null;this.src='{{ product.extraData.imageType2 }}';">
 
 An example could be;
@@ -74,39 +74,39 @@ imageType1 = http://domain/product/image.webp
 imageType2 = http://domain/product/image.png
 ```
 ### *Change the image size on SMARTWEB webP*
-```
+```js
 imgUrl: [$("g\\:image_link").text().replace(/(.*)\/.*$/, "$1"), $("item > g\\:image_link").text().split("/").pop().replace(/^/, "/_thumbs/")].join("").replace(/(.*)\./, "$1.w293.h293.fill.")
 ```
 ### *If previous price does not exist on non sale products*
-```
+```js
 extraData.discountPercentage: [[[$("previousprice").text(), $("price").text()].removeMatching(/^$/).shift(),
                     $("price").text()].subtract().multiply(100),
                     [$("previousprice").text(), $("price").text()].removeMatching(/^$/).shift()].divide().round().replace(/^/, "000").replace(/\d*(0\d{2})$/g, "$1")
 ```
 ## *HIERARCHY*
 ### *Remove from hierarchies*
-````
+```js
 .fns("removeMatching", /Alla produkter/ig)
 .fns("join", "|||").removeMatching(/^home|mÊrker/i).fns("split", "|||")
-````
-### *Recom on last hierarchy not first*
 ```
+### *Recom on last hierarchy not first*
+```js
 extraData.hasMoreThanOneLevel: $(".m-breadcrumb li.page span").fns("text").slice(2).join("||").matches(/.*\|\|.*/)
 Switch out the classes and number of slice maybe
 ```
 ### *Hierarchy selecter for category pages*
-```
+```js
 aw$(".breadcrumbs .items .item").fns("text").fns("trim").slice(1).asHierarchy()
 Switch out the classes
 ```
 ### *Clean out categories in search*
-```
+```js
 url: $("hasProducts, url").text().replace(/^false.*/, "").replace(/^true/, "")
 title: $("isVisibleInMenu, name").fns("text").join("||").replace(/^0.*/, "").split("||").pop()
 ```
 ## *RECOMS*
 ### *ForLoop for sizes in stock*
-```
+```js
 {% for size in product.extraDataList.sizes %}
 	{% assign index = forloop.index0 %}
 	{% if product.extraDataList.stock[index] != "0" %}
@@ -115,18 +115,17 @@ title: $("isVisibleInMenu, name").fns("text").join("||").replace(/^0.*/, "").spl
 {% endfor %}
 ```
 ### *Example of removing category box if filter is active*
-```
+```js
 document.querySelectorAll(".af_filter_content ul li input[type='checkbox']").forEach(function(item){
     item.addEventListener("click",function(e){
         setTimeout(function(){
-
-			if(window.location.href.includes("?")){
+            if(window.location.href.includes("?")){
 				document.querySelector("#aw-box-{{ key }}").style.display='none';
 			}
-			else{
+			else {
 				document.querySelector("#aw-box-{{ key }}").style.display='block';
 			}
-        },500)
+        }, 500)
     })
 })
 ```
@@ -135,17 +134,17 @@ document.querySelectorAll(".af_filter_content ul li input[type='checkbox']").for
 https://addwish.com/supervisor/app/678784/websites/107e93d5-5ff6-4c75-896a-857b3f5df1b3/designs/edit/135110
 ```
 ### *Category page don't show on more than 8 products and show not on filter active*
-```
+```css
 .catalog-category-view:has(.item:eq(8)):not(:has(.filter-active)) .column.main .category-product-actions
 ```
 ### *STRECHED recom fix*
-```
 Find customers parent element
 Add this to design:
+```js
 document.querySelector('#aw-box-{{ key }}').style.width=document.querySelector("#Content_Productlist").offsetWidth+"px";
 ```
 ### *FREE SHIPPING USA*
-```
+```js
 var heading = jQuery(".aw-heading"),
 basketAmount = parseFloat( jQuery(".cart-total-wrapper .money").text().trim().split("$").pop().trim().replace(",", "") );
 
@@ -160,7 +159,7 @@ if( !isNaN(basketAmount) ) {
 }
 ```
 ### *If shipping price is within the Total Price*
-```
+```js
 var basketAmount = 0;
 	document.querySelectorAll(".webshop-showbasket .product_price").forEach((item)=>{
 	console.log(item.textContent.split("NOK").shift().trim());
@@ -180,13 +179,13 @@ if( !isNaN(basketAmount) ) {
 }
 ```
 ### *Add fade on last product in slider*
-```
+```js
 .aw-slider-{{ key }} .swiper-slide.swiper-slide-next + .swiper-slide + .swiper-slide {
     opacity: .2;
 }
 ```
 ### *URL : Display none on recom*
-```
+```js
 var searchParams = new URLSearchParams(window.location.search);
 	console.log(typeof searchParams.get('p'));
 	if (searchParams.get('p') !== null){
@@ -194,29 +193,29 @@ var searchParams = new URLSearchParams(window.location.search);
 	}
 ```
 ### *Trigger Upsell Dropdown after page reload*
-```
+```js
 var viewportWidth = window.matchMedia("(min-width: 700px)");
 
-if(sessionStorage.getItem("buyButtonClicked")){
+if (sessionStorage.getItem("buyButtonClicked")) {
 
-if(sessionStorage.getItem("buyButtonClicked") === "true"){
-setTimeout(function(){
-document.querySelector("#slider-{{ key }}").style.overflow = "visible";
-if(viewportWidth.matches){
-document.querySelector("#slider-{{ key }}").style.height = "660px";
-document.querySelector("#{{ key }}").style.height = "715px";
-}
-else{
-document.querySelector("#slider-{{ key }}").style.height = "680px";
-document.querySelector("#{{ key }}").style.height = "820px";
-}
-sessionStorage.setItem("buyButtonClicked", "false");
-},1000);
+    if (sessionStorage.getItem("buyButtonClicked") === "true") {
+        setTimeout(function () {
+            document.querySelector("#slider-{{ key }}").style.overflow = "visible";
+            if (viewportWidth.matches) {
+                document.querySelector("#slider-{{ key }}").style.height = "660px";
+                document.querySelector("#{{ key }}").style.height = "715px";
+            }
+            else {
+                document.querySelector("#slider-{{ key }}").style.height = "680px";
+                document.querySelector("#{{ key }}").style.height = "820px";
+            }
+            sessionStorage.setItem("buyButtonClicked", "false");
+        }, 1000);
 
+    }
 }
-}
-Array.from(document.querySelectorAll(".button-primary.button-icon")).pop().addEventListener("click",function(){
-sessionStorage.setItem("buyButtonClicked","true");
+Array.from(document.querySelectorAll(".button-primary.button-icon")).pop().addEventListener("click", function () {
+    sessionStorage.setItem("buyButtonClicked", "true");
 });
 ```
 ### *Free shipping Price Range Products in Cart*
@@ -236,7 +235,7 @@ like so: https://explain.helloretail.com/BluodB1q - the behaviour on the page sh
 ```
 ## *SEARCH*
 ### *MOBILE GRID SEARCH*
-```
+```css
 1. .hr-tab-wrapper {
 	display: flex;
 	flex-wrap: wrap;
@@ -270,18 +269,18 @@ like so: https://explain.helloretail.com/BluodB1q - the behaviour on the page sh
 }
 ```
 ### *Add redirects in grid search*
-```
-Add to the top
+```js
+// Add to the top
 import "search_redirects";
 
-Add above engine_options
+// Add above engine_options
 document.querySelector(".aw-search-input").addEventListener('keyup', (event) => {
-search_redirects.match_and_go(event.target.value, key)
+    search_redirects.match_and_go(event.target.value, key)
 });
 ```
-### *Filter Sorting DESKTOP by Mikkel*
-```
-###Function
+### *Filter Sorting DESKTOP by [Mikkel](https://github.com/Mikkelmbk)*
+```js
+// Function
 /* text */ var desktop_default_filters_to_sort = ""; // =asc or =desc to control the individual filters sorting directive.
 /* text */ var desktop_extraData_filters_to_sort = "length,buckle,width=desc"; // =asc or =desc to control the individual filters sorting directive.
 /* text */ var desktop_extraDataList_filters_to_sort = ""; // =asc or =desc to control the individual filters sorting directive.
@@ -294,147 +293,147 @@ desktop_add_to_assorted_filters_list = desktop_add_to_assorted_filters_list.toLo
 /* boolean */ var desktop_numbers_first_in_filters = true; // control whether the labels considered to be numerical values should be shown before or after the alphabetical labels.
 /* boolean */ var desktop_console_debug = false;
 /* text */ var desktop_filter_title_start_with_number_or_contain_number_or_only_number = "start_with_number".toLowerCase(); // start_with_number / contain_number / only_number: control when a the labels in filter dropdowns should be considered numerical.
-function sortFiltersDesktop(parentClass,sortingDirective){
-console.time(`${parentClass} filtering took`);
-var numDesktop = [];
-var alphDesktop = [];
-var assortedDesktop = [];
-if(!document.querySelector(parentClass)){
-if(desktop_console_debug){
-console.log(`"${parentClass}" is not a valid filter selector and will not be sorted.`);
-}
-return;
-}
-const parentDesktop = document.querySelector(parentClass);
-var divsDesktop;
+function sortFiltersDesktop(parentClass, sortingDirective) {
+    console.time(`${parentClass} filtering took`);
+    var numDesktop = [];
+    var alphDesktop = [];
+    var assortedDesktop = [];
+    if (!document.querySelector(parentClass)) {
+        if (desktop_console_debug) {
+            console.log(`"${parentClass}" is not a valid filter selector and will not be sorted.`);
+        }
+        return;
+    }
+    const parentDesktop = document.querySelector(parentClass);
+    var divsDesktop;
 
-sortingDirective ? parentDesktop.setAttribute("sorting-directive",sortingDirective) : parentDesktop.setAttribute("sorting-directive","default");
-parentClass.includes("hierarchies") ? divsDesktop = [...parentDesktop.querySelectorAll(`${parentClass} li`)] : divsDesktop = [...parentDesktop.querySelectorAll(`${parentClass} label`)];
+    sortingDirective ? parentDesktop.setAttribute("sorting-directive", sortingDirective) : parentDesktop.setAttribute("sorting-directive", "default");
+    parentClass.includes("hierarchies") ? divsDesktop = [...parentDesktop.querySelectorAll(`${parentClass} li`)] : divsDesktop = [...parentDesktop.querySelectorAll(`${parentClass} label`)];
 
-divsDesktop.forEach(function(label) {
-var titleDesktop = label.querySelector(".aw-filter-tag-title").textContent.trim();
-if(desktop_add_to_assorted_filters_list != ""){
-var index = desktop_add_to_assorted_filters_list.indexOf(titleDesktop.toLowerCase());
-if(index != -1){  
-label.setAttribute("user-sorting",index);
-}
-};
-if(label.hasAttribute("user-sorting")){
-assortedDesktop.push(label);
-}
-else if((titleDesktop.match(/[^\d]*(\d+).*/) && desktop_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number") || (titleDesktop.match(/^(\d+).*/) && desktop_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number") || (titleDesktop.match(/^\d+$/) && desktop_filter_title_start_with_number_or_contain_number_or_only_number == "only_number")){
-if(desktop_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number"){
-label.setAttribute("num-sorting",titleDesktop.replace(/^(\d+).*/,"$1"));
-numDesktop.push(label);
-}
-else if(desktop_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number"){
-label.setAttribute("num-sorting",titleDesktop.replace(/[^\d]*(\d+).*/,"$1"));
-numDesktop.push(label);
-}
-else{
-label.setAttribute("num-sorting",titleDesktop);
-numDesktop.push(label);
-}
-}
-else{
-label.setAttribute("alph-sorting",titleDesktop.replace(/\d+/,""));
-alphDesktop.push(label);
-}
-});
+    divsDesktop.forEach(function (label) {
+        var titleDesktop = label.querySelector(".aw-filter-tag-title").textContent.trim();
+        if (desktop_add_to_assorted_filters_list != "") {
+            var index = desktop_add_to_assorted_filters_list.indexOf(titleDesktop.toLowerCase());
+            if (index != -1) {
+                label.setAttribute("user-sorting", index);
+            }
+        };
+        if (label.hasAttribute("user-sorting")) {
+            assortedDesktop.push(label);
+        }
+        else if ((titleDesktop.match(/[^\d]*(\d+).*/) && desktop_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number") || (titleDesktop.match(/^(\d+).*/) && desktop_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number") || (titleDesktop.match(/^\d+$/) && desktop_filter_title_start_with_number_or_contain_number_or_only_number == "only_number")) {
+            if (desktop_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number") {
+                label.setAttribute("num-sorting", titleDesktop.replace(/^(\d+).*/, "$1"));
+                numDesktop.push(label);
+            }
+            else if (desktop_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number") {
+                label.setAttribute("num-sorting", titleDesktop.replace(/[^\d]*(\d+).*/, "$1"));
+                numDesktop.push(label);
+            }
+            else {
+                label.setAttribute("num-sorting", titleDesktop);
+                numDesktop.push(label);
+            }
+        }
+        else {
+            label.setAttribute("alph-sorting", titleDesktop.replace(/\d+/, ""));
+            alphDesktop.push(label);
+        }
+    });
 
-numDesktop.sort(function(a,b){
-if(sortingDirective){
-if(sortingDirective == "asc"){
-return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
-}
-else{
-return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
-}
-}
-else{
-if(desktop_ascending_filter_sorting){
-return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
-}
-else{
-return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
-}
-}
-});
-alphDesktop.sort(function(a,b){
-if(sortingDirective){
-if(sortingDirective == "asc"){
-return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
-}
-else{
-return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
-}
-}
-else{
-if(desktop_ascending_filter_sorting){
-return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
-}
-else{
-return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
-}
-}
-});
-assortedDesktop.sort(function(a,b){
-if(sortingDirective){
-if(sortingDirective == "asc"){
-return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
-}
-else{
-return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
-}
-}
-else{
-if(desktop_ascending_filter_sorting){
-return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
-}
-else{
-return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
-}
-}
-});
-if(desktop_numbers_first_in_filters){
-assortedDesktop.forEach(function(div){ parentDesktop.append(div); });
-numDesktop.forEach(function(div){ parentDesktop.append(div); });
-alphDesktop.forEach(function(div){ parentDesktop.append(div); });
-}
-else{
-assortedDesktop.forEach(function(div){ parentDesktop.append(div); });
-alphDesktop.forEach(function(div){ parentDesktop.append(div); });
-numDesktop.forEach(function(div){ parentDesktop.append(div); });
-}
-console.timeEnd(`${parentClass} filtering took`);
-}
-
-###Invocation
-if(desktop_default_filters_to_sort != ""){
-desktop_default_filters_to_sort.forEach(function(filter){
-var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
-var filter = filter.includes("=") ? filter.split("=").shift() : filter;
-var filterStructured = `[data-filter='${filter}']`;
-filter == "hierarchies" ? sortFiltersDesktop(`${filterStructured} .aw-filter-list`,sortingDirective) : sortFiltersDesktop(`${filterStructured} .aw-filter-tag-list`,sortingDirective);
-});
+    numDesktop.sort(function (a, b) {
+        if (sortingDirective) {
+            if (sortingDirective == "asc") {
+                return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
+            }
+            else {
+                return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
+            }
+        }
+        else {
+            if (desktop_ascending_filter_sorting) {
+                return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
+            }
+            else {
+                return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
+            }
+        }
+    });
+    alphDesktop.sort(function (a, b) {
+        if (sortingDirective) {
+            if (sortingDirective == "asc") {
+                return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+            }
+            else {
+                return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+            }
+        }
+        else {
+            if (desktop_ascending_filter_sorting) {
+                return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+            }
+            else {
+                return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+            }
+        }
+    });
+    assortedDesktop.sort(function (a, b) {
+        if (sortingDirective) {
+            if (sortingDirective == "asc") {
+                return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
+            }
+            else {
+                return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
+            }
+        }
+        else {
+            if (desktop_ascending_filter_sorting) {
+                return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
+            }
+            else {
+                return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
+            }
+        }
+    });
+    if (desktop_numbers_first_in_filters) {
+        assortedDesktop.forEach(function (div) { parentDesktop.append(div); });
+        numDesktop.forEach(function (div) { parentDesktop.append(div); });
+        alphDesktop.forEach(function (div) { parentDesktop.append(div); });
+    }
+    else {
+        assortedDesktop.forEach(function (div) { parentDesktop.append(div); });
+        alphDesktop.forEach(function (div) { parentDesktop.append(div); });
+        numDesktop.forEach(function (div) { parentDesktop.append(div); });
+    }
+    console.timeEnd(`${parentClass} filtering took`);
 }
 
-if(desktop_extraData_filters_to_sort != ""){
-desktop_extraData_filters_to_sort.forEach(function(filter){
-var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
-var filter = filter.includes("=") ? filter.split("=").shift() : filter;
-var filterStructured = `[data-filter='extraData.${filter}']`;
-sortFiltersDesktop(`${filterStructured} .aw-filter-tag-list`,sortingDirective);
-});
+// Invocation
+if (desktop_default_filters_to_sort != "") {
+    desktop_default_filters_to_sort.forEach(function (filter) {
+        var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
+        var filter = filter.includes("=") ? filter.split("=").shift() : filter;
+        var filterStructured = `[data-filter='${filter}']`;
+        filter == "hierarchies" ? sortFiltersDesktop(`${filterStructured} .aw-filter-list`, sortingDirective) : sortFiltersDesktop(`${filterStructured} .aw-filter-tag-list`, sortingDirective);
+    });
 }
 
-if(desktop_extraDataList_filters_to_sort != ""){
-desktop_extraDataList_filters_to_sort.forEach(function(filter){
-var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
-var filter = filter.includes("=") ? filter.split("=").shift() : filter;
-var filterStructured = `[data-filter='extraDataList.${filter}']`;
-sortFiltersDesktop(`${filterStructured} .aw-filter-tag-list`,sortingDirective);
-});
+if (desktop_extraData_filters_to_sort != "") {
+    desktop_extraData_filters_to_sort.forEach(function (filter) {
+        var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
+        var filter = filter.includes("=") ? filter.split("=").shift() : filter;
+        var filterStructured = `[data-filter='extraData.${filter}']`;
+        sortFiltersDesktop(`${filterStructured} .aw-filter-tag-list`, sortingDirective);
+    });
+}
+
+if (desktop_extraDataList_filters_to_sort != "") {
+    desktop_extraDataList_filters_to_sort.forEach(function (filter) {
+        var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
+        var filter = filter.includes("=") ? filter.split("=").shift() : filter;
+        var filterStructured = `[data-filter='extraDataList.${filter}']`;
+        sortFiltersDesktop(`${filterStructured} .aw-filter-tag-list`, sortingDirective);
+    });
 }
 
 ###Positioning
@@ -442,9 +441,9 @@ sortFiltersDesktop(`${filterStructured} .aw-filter-tag-list`,sortingDirective);
 Function : https://explain.helloretail.com/X6uR6R0w
 Invocation : https://explain.helloretail.com/L1uXwXNv
 ```
-### *Sort filters MOBILE by Mikkel*
-```
-###Function
+### *Sort filters MOBILE by [Mikkel](https://github.com/Mikkelmbk)*
+```js
+// Function
 /* text */ var mobile_default_filters_to_sort = "brand,hierarchies";
 /* text */ var mobile_extraData_filters_to_sort = "";
 /* text */ var mobile_extraDataList_filters_to_sort = "size=desc,color=asc";
@@ -457,146 +456,146 @@ mobile_add_to_assorted_filters_list = mobile_add_to_assorted_filters_list.toLowe
 /* boolean */ var mobile_numbers_first_in_filters = true;
 /* boolean */ var mobile_console_debug = false;
 /* text */ var mobile_filter_title_start_with_number_or_contain_number_or_only_number = "only_number".toLowerCase();
-function sortFiltersMobile(parentClass,sortingDirective){
-var numMobile = [];
-var alphMobile = [];
-var assortedMobile = [];
-if(!document.querySelector(parentClass)){
-if(mobile_console_debug){
-console.log(`"${parentClass}" is not a valid filter selector and will not be sorted.`);
-}
-return;
-}
-const parentMobile = document.querySelector(parentClass);
-var divsMobile;
+function sortFiltersMobile(parentClass, sortingDirective) {
+    var numMobile = [];
+    var alphMobile = [];
+    var assortedMobile = [];
+    if (!document.querySelector(parentClass)) {
+        if (mobile_console_debug) {
+            console.log(`"${parentClass}" is not a valid filter selector and will not be sorted.`);
+        }
+        return;
+    }
+    const parentMobile = document.querySelector(parentClass);
+    var divsMobile;
 
-sortingDirective ? parentMobile.setAttribute("sorting-directive",sortingDirective) : parentMobile.setAttribute("sorting-directive","default");
-parentClass.includes("hierarchies") ? divsMobile = [...parentMobile.querySelectorAll(`${parentClass} li`)] : divsMobile = [...parentMobile.querySelectorAll(`${parentClass} label`)];
+    sortingDirective ? parentMobile.setAttribute("sorting-directive", sortingDirective) : parentMobile.setAttribute("sorting-directive", "default");
+    parentClass.includes("hierarchies") ? divsMobile = [...parentMobile.querySelectorAll(`${parentClass} li`)] : divsMobile = [...parentMobile.querySelectorAll(`${parentClass} label`)];
 
-divsMobile.forEach(function(label) {
-var titleMobile = label.querySelector(".aw-filter-tag-title").textContent.trim();
-if(mobile_add_to_assorted_filters_list != ""){
-var index = mobile_add_to_assorted_filters_list.indexOf(titleMobile.toLowerCase());
-if(index != -1){  
-label.setAttribute("user-sorting",index);
-}
-};
-if(label.hasAttribute("user-sorting")){
-assortedMobile.push(label);
-}
-else if((titleMobile.match(/[^\d]*(\d+).*/) && mobile_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number") || (titleMobile.match(/^(\d+).*/) && mobile_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number") || (titleMobile.match(/^\d+$/) && mobile_filter_title_start_with_number_or_contain_number_or_only_number == "only_number")){
-if(mobile_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number"){
-label.setAttribute("num-sorting",titleMobile.replace(/^(\d+).*/,"$1"));
-numMobile.push(label);
-}
-else if(mobile_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number"){
-label.setAttribute("num-sorting",titleMobile.replace(/[^\d]*(\d+).*/,"$1"));
-numMobile.push(label);
-}
-else{
-label.setAttribute("num-sorting",titleMobile);
-numMobile.push(label);
-}
-}
-else{
-label.setAttribute("alph-sorting",titleMobile.replace(/\d+/,""));
-alphMobile.push(label);
-}
-});
+    divsMobile.forEach(function (label) {
+        var titleMobile = label.querySelector(".aw-filter-tag-title").textContent.trim();
+        if (mobile_add_to_assorted_filters_list != "") {
+            var index = mobile_add_to_assorted_filters_list.indexOf(titleMobile.toLowerCase());
+            if (index != -1) {
+                label.setAttribute("user-sorting", index);
+            }
+        };
+        if (label.hasAttribute("user-sorting")) {
+            assortedMobile.push(label);
+        }
+        else if ((titleMobile.match(/[^\d]*(\d+).*/) && mobile_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number") || (titleMobile.match(/^(\d+).*/) && mobile_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number") || (titleMobile.match(/^\d+$/) && mobile_filter_title_start_with_number_or_contain_number_or_only_number == "only_number")) {
+            if (mobile_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number") {
+                label.setAttribute("num-sorting", titleMobile.replace(/^(\d+).*/, "$1"));
+                numMobile.push(label);
+            }
+            else if (mobile_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number") {
+                label.setAttribute("num-sorting", titleMobile.replace(/[^\d]*(\d+).*/, "$1"));
+                numMobile.push(label);
+            }
+            else {
+                label.setAttribute("num-sorting", titleMobile);
+                numMobile.push(label);
+            }
+        }
+        else {
+            label.setAttribute("alph-sorting", titleMobile.replace(/\d+/, ""));
+            alphMobile.push(label);
+        }
+    });
 
-numMobile.sort(function(a,b){
-if(sortingDirective){
-if(sortingDirective == "asc"){
-return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
-}
-else{
-return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
-}
-}
-else{
-if(mobile_ascending_filter_sorting){
-return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
-}
-else{
-return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
-}
-}
-});
-alphMobile.sort(function(a,b){
-if(sortingDirective){
-if(sortingDirective == "asc"){
-return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
-}
-else{
-return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
-}
-}
-else{
-if(mobile_ascending_filter_sorting){
-return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
-}
-else{
-return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
-}
-}
-});
-assortedMobile.sort(function(a,b){
-if(sortingDirective){
-if(sortingDirective == "asc"){
-return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
-}
-else{
-return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
-}
-}
-else{
-if(mobile_ascending_filter_sorting){
-return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
-}
-else{
-return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
-}
-}
+    numMobile.sort(function (a, b) {
+        if (sortingDirective) {
+            if (sortingDirective == "asc") {
+                return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
+            }
+            else {
+                return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
+            }
+        }
+        else {
+            if (mobile_ascending_filter_sorting) {
+                return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
+            }
+            else {
+                return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
+            }
+        }
+    });
+    alphMobile.sort(function (a, b) {
+        if (sortingDirective) {
+            if (sortingDirective == "asc") {
+                return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+            }
+            else {
+                return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+            }
+        }
+        else {
+            if (mobile_ascending_filter_sorting) {
+                return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+            }
+            else {
+                return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+            }
+        }
+    });
+    assortedMobile.sort(function (a, b) {
+        if (sortingDirective) {
+            if (sortingDirective == "asc") {
+                return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
+            }
+            else {
+                return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
+            }
+        }
+        else {
+            if (mobile_ascending_filter_sorting) {
+                return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
+            }
+            else {
+                return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
+            }
+        }
 
-});
-if(mobile_numbers_first_in_filters){
-assortedMobile.forEach(function(div){ parentMobile.append(div); });
-numMobile.forEach(function(div){ parentMobile.append(div); });
-alphMobile.forEach(function(div){ parentMobile.append(div); });
-}
-else{
-assortedMobile.forEach(function(div){ parentMobile.append(div); });
-alphMobile.forEach(function(div){ parentMobile.append(div); });
-numMobile.forEach(function(div){ parentMobile.append(div); });
-}
-}
-
-###Invocation
-if(mobile_default_filters_to_sort != ""){
-mobile_default_filters_to_sort.forEach(function(filter){
-var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
-var filter = filter.includes("=") ? filter.split("=").shift() : filter;
-var filterStructured = `.hr-search-overlay-filter-wrap[data-filter='${filter}']`;
-filter == "hierarchies" ? sortFiltersMobile(`${filterStructured} .aw-filter-list`,sortingDirective) : sortFiltersMobile(`${filterStructured} .aw-filter-tag-list`,sortingDirective);
-});
+    });
+    if (mobile_numbers_first_in_filters) {
+        assortedMobile.forEach(function (div) { parentMobile.append(div); });
+        numMobile.forEach(function (div) { parentMobile.append(div); });
+        alphMobile.forEach(function (div) { parentMobile.append(div); });
+    }
+    else {
+        assortedMobile.forEach(function (div) { parentMobile.append(div); });
+        alphMobile.forEach(function (div) { parentMobile.append(div); });
+        numMobile.forEach(function (div) { parentMobile.append(div); });
+    }
 }
 
-if(mobile_extraData_filters_to_sort != ""){
-mobile_extraData_filters_to_sort.forEach(function(filter){
-var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
-var filter = filter.includes("=") ? filter.split("=").shift() : filter;
-var filterStructured = `.hr-search-overlay-filter-wrap[data-filter='extraData.${filter}']`;
-sortFiltersMobile(`${filterStructured} .aw-filter-tag-list`,sortingDirective);
-});
+// Invocation
+if (mobile_default_filters_to_sort != "") {
+    mobile_default_filters_to_sort.forEach(function (filter) {
+        var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
+        var filter = filter.includes("=") ? filter.split("=").shift() : filter;
+        var filterStructured = `.hr-search-overlay-filter-wrap[data-filter='${filter}']`;
+        filter == "hierarchies" ? sortFiltersMobile(`${filterStructured} .aw-filter-list`, sortingDirective) : sortFiltersMobile(`${filterStructured} .aw-filter-tag-list`, sortingDirective);
+    });
 }
 
-if(mobile_extraDataList_filters_to_sort != ""){
-mobile_extraDataList_filters_to_sort.forEach(function(filter){
-var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
-var filter = filter.includes("=") ? filter.split("=").shift() : filter;
-var filterStructured = `.hr-search-overlay-filter-wrap[data-filter='extraDataList.${filter}']`;
-sortFiltersMobile(`${filterStructured} .aw-filter-tag-list`,sortingDirective);
-});
+if (mobile_extraData_filters_to_sort != "") {
+    mobile_extraData_filters_to_sort.forEach(function (filter) {
+        var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
+        var filter = filter.includes("=") ? filter.split("=").shift() : filter;
+        var filterStructured = `.hr-search-overlay-filter-wrap[data-filter='extraData.${filter}']`;
+        sortFiltersMobile(`${filterStructured} .aw-filter-tag-list`, sortingDirective);
+    });
+}
+
+if (mobile_extraDataList_filters_to_sort != "") {
+    mobile_extraDataList_filters_to_sort.forEach(function (filter) {
+        var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
+        var filter = filter.includes("=") ? filter.split("=").shift() : filter;
+        var filterStructured = `.hr-search-overlay-filter-wrap[data-filter='extraDataList.${filter}']`;
+        sortFiltersMobile(`${filterStructured} .aw-filter-tag-list`, sortingDirective);
+    });
 }
 
 Function : https://explain.helloretail.com/xQuw5wvd
@@ -604,59 +603,58 @@ Invocation 1 : https://explain.helloretail.com/7Ku6r6R6
 Invocation 2 : https://explain.helloretail.com/JruoBovz
 ```
 ### *Hide/Show filter based on input*
-```
-Placement of snippet: last line in the function named "load_more_results"
-Notes: This works with Overlay out of the box. Just rename the data-filter to the given filter, and the matched value of the input-field to trigger the filter.
-
+```js
+// Placement of snippet: last line in the function named "load_more_results"
+// Notes: This works with Overlay out of the box. Just rename the data-filter to the given filter, and the matched value of the input-field to trigger the filter.
 var inputValue = document.querySelector(".hr-search > input").value
 var mistralFilterContainer = document.querySelector(".aw-filter__single-wrapper[data-filter='extraData.filterName']");
 
-if(document.querySelector(".hr-search > input").value.match(/.*TRIGGERWORD.*/i)){
-mistralFilterContainer.style.display = "block";
+if (document.querySelector(".hr-search > input").value.match(/.*TRIGGERWORD.*/i)) {
+    mistralFilterContainer.style.display = "block";
 } else {
-mistralFilterContainer.style.display = "none";
+    mistralFilterContainer.style.display = "none";
 }
 ```
 ### *Remove unwanted sorting ascending or descending values*
-```
-(Important → the value which should be removed should be named "THISSHOULDBEREMOVED" in the ascending or descending title)
+```js
+// (Important → the value which should be removed should be named "THISSHOULDBEREMOVED" in the ascending or descending title)
 
-Example - Line 135 JavaScript Estella.nl
+// Example - Line 135 JavaScript Estella.nl
 
 document.querySelectorAll(".aw-sorting-tag-list label").forEach(function(item){
-if(item.textContent == "THISSHOULDBEREMOVED"){
-item.remove();
-}
+    if(item.textContent == "THISSHOULDBEREMOVED"){
+        item.remove();
+    }
 })
 ```
 ### *Remove customers page scroll when Embedded search is open*
-```
+```css
 .hr-search-disable-scroll{
-height:100vh!important;
-width:100vw!important;
-overflow:hidden!important;
+    height:100vh!important;
+    width:100vw!important;
+    overflow:hidden!important;
 }
 ```
 ### *Set up instant grid search*
-```
 change the "var input" to the right class
 .attr("action", "/pages/search-results")
 Then in the HTML :
+```html
 <div class="aw-grid-search-results__submit-wrapper">
-		<a href="https://shenanigans.toys/pages/search-results?q={{query}}" class="aw-grid-search-results__submit-link">
-			{{ show_more_results_text }} ({{ products.totalResults }})
-		</a>
-	</div>
+	<a href="https://shenanigans.toys/pages/search-results?q={{query}}" class="aw-grid-search-results__submit-link">
+		{{ show_more_results_text }} ({{ products.totalResults }})
+	</a>
+</div>
 ```
 ### *Fix scroll in search*
-```
-max-height: 100vh;
-overflow: scroll;
+```css
+    max-height: 100vh;
+    verflow: scroll;
 ```
 ### *Hide scrollbar from Embedded searches that are narrower than the viewport width*
-```
+```css
 .hr-overlay-search::-webkit-scrollbar {
-width:0!important;
+    width: 0 !important;
 }
 ```
 ### *Add filters in full search*
@@ -664,7 +662,7 @@ width:0!important;
 dubuy.dk, from all templates!!
 ```
 ### *Remove CROSS in desktop search*
-```
+```css
 input[type=search]::-ms-clear { 
 	display: none; 
 	width : 0; 
@@ -683,12 +681,12 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 ```
 ### *Reset form event listener SEARCH*
-```
+```js
 var searchBtn = document.querySelector(".header-search");
 searchBtn.replaceWith(searchBtn.cloneNode(true));
 ```
 ### *Add hierachypath to category content template*
-```
+```html
 <span class="hr-search-overlay-content-hierarchy-wrapper">
     {% for level in ctnt.hierarchy limit : 1 %}
     {% if level != "" and level != current_content_item.title %}
@@ -699,8 +697,9 @@ searchBtn.replaceWith(searchBtn.cloneNode(true));
     {% endif %}
     {% endfor %}
 </span>
+```
 (Remove limit : 1, to show all hierachies)
-
+```css
 .hr-search-overlay-content-hierarchy-wrapper {
     display: block;
     white-space: nowrap;
@@ -709,8 +708,9 @@ searchBtn.replaceWith(searchBtn.cloneNode(true));
     font-size: .9em;
     color: #777;
 }
-https://explain.helloretail.com/DOum40Bd
 ```
+https://explain.helloretail.com/DOum40Bd
+
 ## *PAGES*
 ### *SHOPIFY Insert div*
 ```
@@ -719,7 +719,7 @@ Online store → Themes → Debut tab → Actions → Edit code → Layout folde
 https://explain.helloretail.com/jkuX7JlW
 ```
 ### *SHOPIFY Automatic sorting on newest by date*
-```
+```js
 document.querySelector("label input[value='created desc']").parentElement.style.order = -1;
 
 	if( window.location.pathname === '/collections/nyheder' || window.location.pathname === '/collections/nyheder-women') {
@@ -729,28 +729,29 @@ document.querySelector("label input[value='created desc']").parentElement.style.
 	}
 ```
 ### *Test pages div*
-```
+```js
 let html = `<div id="helloretail-category-page-624421fb2d64b76dbff35627" data-filters=" { &apos;hierarchies&apos;: [&apos;Overlocker&apos;, &apos;Bernina Overlocker&apos;] } "></div>`
 
 document.querySelector("SELECTOR TO BE POSITIONED RELATIVE TO").insertAdjacentHTML("beforebegin",html);
+```
 
 The &apos; represents a literal quote: '
 But has to remain  &apos; in order for the html to recognize and format it correctly.
 
 Once above code has been run in the console of the browser, run the following piece of code (WHILE THE PAGES DRAFT IS ENABLED)
-
+```js
 ADDWISH_PARTNER_NS.api.reload()
 ```
 ### *Hide irrelevant filters*
-```
-Example: Pandasia line 127 - 145 Pages Javascript.
 
+Example: Pandasia line 127 - 145 Pages Javascript.
+```js
 if(document.querySelectorAll("div[data-filter-name='Tilbud'] .aw-filter-tag-list label").length == "1"){
-document.querySelector(".aw-filter__single-wrapper[data-filter-name='Tilbud']").remove()
+    document.querySelector(".aw-filter__single-wrapper[data-filter-name='Tilbud']").remove()
 };
 ```
 ### *Remove customers product list*
-```
+```js
 var custom_product_count = content.products.count;
 if(custom_product_count > 0){
 	if(document.querySelector("#maincontent .column.main #layer-product-list")){
@@ -759,26 +760,26 @@ if(custom_product_count > 0){
 }
 ```
 ### *Structuring extraDataList in Pages data-filters attribute*
-```
+```html
 data-filters=' { "extraDataList.categoryIds": "619" }'
 ```
 ### *Look for elements several times until found or until cap of attempts reached*
-```
+```js
 var timeCount = 0;
 var timeout = setInterval(() => {
-timeCount += 1;
-if(timeCount >= 5){
-clearInterval(timeout);
+    timeCount += 1;
+    if (timeCount >= 5) {
+        clearInterval(timeout);
 
-}
-if (document.querySelector(".category-subheading") && Array.from(document.querySelectorAll(".m-breadcrumb li a span")).pop()) {
-clearInterval(timeout); 
+    }
+    if (document.querySelector(".category-subheading") && Array.from(document.querySelectorAll(".m-breadcrumb li a span")).pop()) {
+        clearInterval(timeout); 
 Do something if elements have been found
-}
+    }
 }, 100);
 ```
 ### *How to structure a Pages REST-API request url*
-```
+```js
 fetch('https://core.helloretail.com/serve/{key}',{
     "method":'POST',
     "mode":'cors',
@@ -816,7 +817,7 @@ https://explain.helloretail.com/WnuDrbGL
 https://explain.helloretail.com/X6uQdooR
 ```
 ### *Show different labels depending on day*
-```
+```js
 var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
 var date = new Date();
@@ -831,28 +832,28 @@ console.log("Workday")
 }
 ```
 ### *Enable debugging messages in console*
-```
+```js
 ADDWISH_PARTNER_NS.util.set_cookie("addwish-debug","true")
 ```
 ### *Check click event*
-```
+```js
 window.addEventListener("click", function(e){console.log(e.target)})
 ```
 ### *Set Timeout*
-```
-setTimeout(function(){
- *Add code here*
-},1000)
+```js
+setTimeout(function() {
+    // *Add code here*
+} ,1000)
 ```
 ### *JS Media Query*
-```
+```js
 if(window.matchMedia("(max-width: 960px)")){
 	// Don't activate on mobile
 	return;
 }
 ```
 ### *Add getCookie method to window object*
-```
+```js
 if(!window.getCookie){
      window.getCookie = function(name) {
           var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
@@ -861,15 +862,15 @@ if(!window.getCookie){
 }
 ```
 ### *How to add input fields to triggered email designs*
-```
-https://addwish.com/supervisor/triggeredemail/designEdit.html?designId=8924
 
+https://addwish.com/supervisor/triggeredemail/designEdit.html?designId=8924
+```html
 {# text priceColor = "#CA0303" #}
 
 <h3 style="color:{{ priceColor }};font-weight:700;"></h3>
 ```
 ### *Make a diagonal line-through*
-```
+```css
 .aw-oldPrice{
 	position: relative;
 }
@@ -896,41 +897,41 @@ https://www.toptal.com/designers/htmlarrows/arrows/
 46.137.110.51
 ```
 ### *Mutation Observer example*
-```
+```js
 var awHeading = document.querySelector(".aw-heading");
 var basketAmount = parseFloat(document.querySelector("#CartTotal strong").textContent.trim().split("kr").shift().trim().replace(".", "").replace(",", "."));
 
 updateAwHeading();
-const observer = new MutationObserver(function(mutationsList, observer) {
-for(const mutation of mutationsList){
-if(mutation.type === "childList"){
-mutation.addedNodes.forEach(function(item){
-if(item.nodeName === "#text"){
-updateAwHeading();
-}
-})
-}
-}
+const observer = new MutationObserver(function (mutationsList, observer) {
+    for (const mutation of mutationsList) {
+        if (mutation.type === "childList") {
+            mutation.addedNodes.forEach(function (item) {
+                if (item.nodeName === "#text") {
+                    updateAwHeading();
+                }
+            })
+        }
+    }
 });
 observer.observe(document.querySelector("#AjaxCartSubtotal"), { childList: true, subtree: true });
 
-function updateAwHeading(){
-basketAmount = parseFloat(document.querySelector("#CartTotal strong").textContent.trim().split("kr").shift().trim().replace(".", "").replace(",", ".")); 
-if(!isNaN(basketAmount)){
-if(basketAmount < 500){
-var amountLeft = 500 - basketAmount;
-awHeading.textContent = "Køb for "+ amountLeft.toFixed(2).replace(".", ",").replace(",00", "") +" kr mere og få gratis fragt";
-}
-else{
-awHeading.textContent = "Du har opnået fri fragt! Andre kunder købte også";
-}
-}
+function updateAwHeading() {
+    basketAmount = parseFloat(document.querySelector("#CartTotal strong").textContent.trim().split("kr").shift().trim().replace(".", "").replace(",", "."));
+    if (!isNaN(basketAmount)) {
+        if (basketAmount < 500) {
+            var amountLeft = 500 - basketAmount;
+            awHeading.textContent = "Køb for " + amountLeft.toFixed(2).replace(".", ",").replace(",00", "") + " kr mere og få gratis fragt";
+        }
+        else {
+            awHeading.textContent = "Du har opnået fri fragt! Andre kunder købte også";
+        }
+    }
 }
 ```
-## *Regex (Victor edition)*
+## *Regex ([Victor](https://github.com/VictorPersson) edition)*
 ### *Remove HTML from string*
 ```js
-.replace(/<[^>]*>/g, "")
+    .replace(/<[^>]*>/g, "")
 ```
 
 ### *Does string contain anything? (Ex are there variants? See Boldliving.se)*
@@ -953,7 +954,7 @@ imgUrl: $("g\\:image_link").text().replace("", "https://www.ljusbutik.se/sv/imag
 ```
 
 ### *Add something if the field is empty, ex placeholder IMG.*
-```js
+```jsjs
 imgUrl: $("imgurl").text().replace(/^$/, "https://shop11399.hstatic.dk/upload_dir/pics/placeholders/aa2c4d4c6f4b2e03ed8ea29601d848d4.png")
 ```
 
