@@ -60,6 +60,18 @@ extraData.hasVariants: $("variants > sku").fns("text").fns("replace", /.*/, "1")
 ```js
 orderNumber: $("source_name, order_number").fns("text").join("||").replace(/^pos.*/, "").split("||").pop()
 ```
+### *SHOPIFY Add metafields and language data*
+```
+1. Set the feed to type "Other"
+2. Add metafields=true&locale=languageCode like this for example http://feed-	helper.addwish.com/shopify/products.py?metafields=true&locale=nb&domain=artbirdstore&apikey=12345&apipassword=shpat_12345&currency=NOK&extract_variants=
+3. Run feed
+
+Some additional info:
+
+If you only need metadata you can leave out the locale part or vice versa.
+languageCode is depends on their language. Here the language is Norwegian Bokmål (nb).
+You should put these parameters as the first parameters to prevent the feed type from automatically changing to "Shopify".
+```
 ### *Change image size*
 ```js
 .replace(/(\.[a-z]{3,4}\?)/i, "_300x$1")
