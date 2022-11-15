@@ -77,6 +77,13 @@ You should put these parameters as the first parameters to prevent the feed type
 .replace(/(\.[a-z]{3,4}\?)/i, "_300x$1")
 .replace(/(\.[a-z]{3,4})$/i, "$1.webp")
 ```
+### *Hover image*
+```js
+{% assign has_hover = false %}
+{% if product.extraData.altImg and product.extraData.altImg != "" and product.extraData.altImg != "undefined" and product.extraData.altImg != "null" %}
+{% assign has_hover = true %}
+{% endif %}
+```
 ### *Adding imageType1 images, with a fallback to imageType2 images if the imageType1 does not exist*
 ```html
 <img src="{{ product.extraData.imageType1 }}" onerror="this.onerror=null;this.src='{{ product.extraData.imageType2 }}';">
