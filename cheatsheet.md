@@ -109,7 +109,7 @@ extraData.discountPercentage: [[[$("previousprice").text(), $("price").text()].r
 .fns("join", "|||").removeMatching(/^home|mÊrker/i).fns("split", "|||")
 ```
 ### *MAGENTO 2 Category filter w/o Brands*
-```
+```js
 extraDataList.categories: $("hierarchies > item").fns("find", "item").fns("fns", "text").fns("join", ">").removeMatching(/^Mærker>/)
 ```
 ### *Recom on last hierarchy not first*
