@@ -140,6 +140,7 @@ onAny(eventName, ...args) {
     },200);
   }
 }
+https://explain.helloretail.com/8LugvLyK
 ``` 
 ### *ForLoop for sizes in stock*
 ```js
