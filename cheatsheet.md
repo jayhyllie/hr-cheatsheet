@@ -128,6 +128,19 @@ url: $("hasProducts, url").text().replace(/^false.*/, "").replace(/^true/, "")
 title: $("isVisibleInMenu, name").fns("text").join("||").replace(/^0.*/, "").split("||").pop()
 ```
 ## *RECOMS*
+### *Recom product title uniform height JS*
+```js
+onAny(eventName, ...args) {
+  if(eventName == "afterInit"){
+    setTimeout(function(){
+      var recomContainerHeight = document.querySelector("#aw-slider-{{ key }}").offsetHeight+"px";
+      document.querySelectorAll("#aw-slider-{{ key }} .swiper-slide > .aw-item").forEach(function(slide){
+        slide.style.height = recomContainerHeight;
+      });
+    },200);
+  }
+}
+``` 
 ### *ForLoop for sizes in stock*
 ```js
 {% for size in product.extraDataList.sizes %}
