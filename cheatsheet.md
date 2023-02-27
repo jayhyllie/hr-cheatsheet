@@ -130,16 +130,16 @@ title: $("isVisibleInMenu, name").fns("text").join("||").replace(/^0.*/, "").spl
 ## *RECOMS*
 ### *Recom product title uniform height JS*
 ```js
-onAny(eventName, ...args) {
-  if(eventName == "afterInit"){
-    setTimeout(function(){
-      var recomContainerHeight = document.querySelector("#aw-slider-{{ key }}").offsetHeight+"px";
-      document.querySelectorAll("#aw-slider-{{ key }} .swiper-slide > .aw-item").forEach(function(slide){
-        slide.style.height = recomContainerHeight;
-      });
-    },200);
-  }
-}
+on: {
+ afterInit: function (e) {
+  setTimeout(function(){
+   var recomContainerHeight = document.querySelector("#aw-slider-{{ key }}").offsetHeight+"px";
+   document.querySelectorAll("#aw-slider-{{ key }} .swiper-slide > .aw-item").forEach(function(slide){
+   slide.style.height = recomContainerHeight;
+   });
+  },200);
+ },
+},
 https://explain.helloretail.com/8LugvLyK
 ``` 
 ### *ForLoop for sizes in stock*
