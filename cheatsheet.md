@@ -817,33 +817,35 @@ Do something if elements have been found
 ```
 ### *How to structure a Pages REST-API request url*
 ```js
-fetch('https://core.helloretail.com/serve/{key}',{
-    "method":'POST',
-    "mode":'cors',
-    "credentials":'include',
+fetch("https://core.helloretail.com/serve/pages/{key}", {
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "include",
     "headers":{
-        'Content-Type':'application/json'
+       'Content-Type':'application/json'
     },
     "body":JSON.stringify({
-        "url":'{url of the category page}',
-        "layout":true,
-        "firstLoad":true,
-        "trackingUserId":'{Hello retail id located in cookies on the webshop}',
-        "format":'json',
-        "params":{
-            "filters":"{'hierarchies':['Fottøy','Damesko']}"
-        },
-        "products": {
-            "start": 0,
-            "count": 4000,
+        "id":"{pages id}",
+        "url":"{url to category page}",
+        "layout":"true",
+        "firstLoad":"true",
+        "products":{
+            "start":0,
+            "count":4000,
             "filters":[
-                "price:100,300",
-                "brand:Hummel",
+                "extraDataList.colorFilter:Silver",
+                "price":"100,500",
+                "brand":"nike"
+                
             ],
             "sorting":[
                 "title desc"
             ],
-        },
+            "params":{
+                "filters":"{'hierarchies':['Strömbrytare och vägguttag']}"
+            },
+            "trackingUserId":"{hello_retail_id cookie}"
+        }
     })
 }).then((res)=>{ return res.json() }).then((data)=>{ console.log(data) });
 ```
