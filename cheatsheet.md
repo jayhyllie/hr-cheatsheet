@@ -829,6 +829,7 @@ fetch("https://core.helloretail.com/serve/pages/{key}", {
         "url":"{url to category page}",
         "layout":"true",
         "firstLoad":"true",
+	"format":'json',
         "products":{
             "start":0,
             "count":4000,
