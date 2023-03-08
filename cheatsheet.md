@@ -56,6 +56,10 @@ inStock: $("inventory_quantity").fns("text").sum().matches(/^[1-9]/)
 ```js
 extraData.hasVariants: $("variants > sku").fns("text").fns("replace", /.*/, "1").sum().notMatches(/^1$/)
 ```
+### *SHOPIFY sizes in stock*
+```js
+extraDataList.sizesInStock: $("items > productvariants available_for_sale:contains(true)").parent().find("selected_options size value").fns("text")
+```
 ### *SHOPIFY ORDER FEED remove if POS*
 ```js
 orderNumber: $("source_name, order_number").fns("text").join("||").replace(/^pos.*/, "").split("||").pop()
