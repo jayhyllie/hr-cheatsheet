@@ -133,11 +133,10 @@ title: $("isVisibleInMenu, name").fns("text").join("||").replace(/^0.*/, "").spl
 ```
 ## *RECOMS*
 ### *VIDEO for customers how to insert divs*
-```
 [Shopify](https://explain.helloretail.com/yAuJL7Rr)
 
 [WooCommerce](https://explain.helloretail.com/RBurX5Gg)
-```
+
 ### *Recom product title uniform height JS*
 ```js
 on: {
