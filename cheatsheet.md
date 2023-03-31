@@ -859,6 +859,61 @@ fetch("https://core.helloretail.com/serve/pages/{key}", {
     })
 }).then((res)=>{ return res.json() }).then((data)=>{ console.log(data) });
 ```
+### *How to structure a TrackingUserId REST-API request url*
+```js
+fetch('https://core.helloretail.com/serve/trackingUser',{
+    method: "POST", 
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        "websiteUuid": "6a3b6823-a7d9-429c-95fe-b34cff1548bd"
+    }), 
+}).then((res) => {
+    return res.json();
+}).then((data) => {
+    console.log(data)
+});
+```
+### *How to structure a Page-view REST-API request url*
+```js
+fetch('https://core.helloretail.com/serve/collect/pageview',{
+    method: "POST", 
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+    "location": "https://b2b.jbs.dk/da/",
+    "trackingUserId": "6426929526c7b13a8a1566f9",
+    "websiteUuid": "6a3b6823-a7d9-429c-95fe-b34cff1548bd",
+    "referrer": "https://b2b.jbs.dk/da/",
+    "url": "https://b2b.jbs.dk/da/produkt/023008750000000000101",
+    "productNumber": "0230087500000000001"
+}), 
+}).then((res) => {
+    return res.json();
+}).then((data) => {
+    console.log(data)
+});
+```
+### *How to structure a Page-view REST-API request url*
+```js
+fetch('https://core.helloretail.com/serve/collect/click',{
+    method: "POST", 
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+    "trackingUserId": "6426929526c7b13a8a1566f9",
+    "websiteUuid": "6a3b6823-a7d9-429c-95fe-b34cff1548bd",
+    "source": "32ef3ce4-19c6-4469-a69f-bb1ce3b450f5"
+}), 
+}).then((res) => {
+    return res.json();
+}).then((data) => {
+    console.log(data)
+});
+```
 ## *RANDOM*
 ### *LipScore Rating*
 ```
