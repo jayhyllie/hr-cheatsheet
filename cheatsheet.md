@@ -648,6 +648,147 @@ Function : https://explain.helloretail.com/xQuw5wvd
 Invocation 1 : https://explain.helloretail.com/7Ku6r6R6
 Invocation 2 : https://explain.helloretail.com/JruoBovz
 ```
+### *Filter Sorting PAGES by [Mikkel](https://github.com/Mikkelmbk)*
+```js
+// Function
+var pages_default_filters_to_sort = "Mærke,Størrelse,Farve";
+var pages_add_to_assorted_filters_list = "ONE SIZE,XXS,XXS/XS,XS,XS/S,S,S/M,M,M/L,L,L/XL,XL,XXL,3XL";
+pages_default_filters_to_sort = pages_default_filters_to_sort.split(",");
+pages_add_to_assorted_filters_list = pages_add_to_assorted_filters_list.toLowerCase().split(",");
+var pages_ascending_filter_sorting = true;
+var pages_numbers_first_in_filters = true;
+var pages_console_debug = true;
+var pages_filter_title_start_with_number_or_contain_number_or_only_number = "start_with_number".toLowerCase();
+function sortFiltersPages(parentClass, sortingDirective) {
+    var numPages = [];
+    var alphPages = [];
+    var assortedPages = [];
+    if (!document.querySelector(parentClass)) {
+        if (pages_console_debug) {
+            console.log(`"${parentClass}" is not a valid filter selector and will not be sorted.`);
+        }
+        return;
+    }
+    const parentPages = document.querySelector(parentClass);
+    var divsPages;
+
+    sortingDirective ? parentPages.setAttribute("sorting-directive", sortingDirective) : parentPages.setAttribute("sorting-directive", "default");
+    parentClass.includes("Kategorier") ? divsPages = [...parentPages.querySelectorAll(`${parentClass} li`)] : divsPages = [...parentPages.querySelectorAll(`${parentClass} label`)];
+
+    divsPages.forEach(function (label) {
+        var titlePages = label.querySelector(".aw-filter-tag-title").textContent.trim();
+        if (pages_add_to_assorted_filters_list != "") {
+            var index = pages_add_to_assorted_filters_list.indexOf(titlePages.toLowerCase());
+            if (index != -1) {
+                label.setAttribute("user-sorting", index);
+            }
+        };
+        if (label.hasAttribute("user-sorting")) {
+            assortedPages.push(label);
+        }
+        else if ((titlePages.match(/[^\d]*(\d+).*/) && pages_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number") || (titlePages.match(/^(\d+).*/) && pages_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number") || (titlePages.match(/^\d+$/) && pages_filter_title_start_with_number_or_contain_number_or_only_number == "only_number")) {
+            if (pages_filter_title_start_with_number_or_contain_number_or_only_number == "start_with_number") {
+                label.setAttribute("num-sorting", titlePages.replace(/^(\d+).*/, "$1"));
+                numPages.push(label);
+            }
+            else if (pages_filter_title_start_with_number_or_contain_number_or_only_number == "contain_number") {
+                label.setAttribute("num-sorting", titlePages.replace(/[^\d]*(\d+).*/, "$1"));
+                numPages.push(label);
+            }
+            else {
+                label.setAttribute("num-sorting", titlePages);
+                numPages.push(label);
+            }
+        }
+
+        else {
+            label.setAttribute("alph-sorting", titlePages.replace(/\d+/, ""));
+            alphPages.push(label);
+        }
+    });
+
+    numPages.sort(function (a, b) {
+        if (sortingDirective) {
+            if (sortingDirective == "asc") {
+                return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
+            }
+            else {
+                return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
+            }
+        }
+        else {
+            if (pages_ascending_filter_sorting) {
+                return a.getAttribute("num-sorting") - b.getAttribute("num-sorting");
+            }
+            else {
+                return b.getAttribute("num-sorting") - a.getAttribute("num-sorting");
+            }
+        }
+
+    });
+    alphPages.sort(function (a, b) {
+        if (sortingDirective) {
+            if (sortingDirective == "asc") {
+                return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+            }
+            else {
+                return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+            }
+        }
+        else {
+            if (pages_ascending_filter_sorting) {
+                return (a.getAttribute("alph-sorting").toLowerCase() > b.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+            }
+            else {
+                return (b.getAttribute("alph-sorting").toLowerCase() > a.getAttribute("alph-sorting").toLowerCase() ? 1 : -1);
+            }
+        }
+
+    });
+    assortedPages.sort(function (a, b) {
+        if (sortingDirective) {
+            if (sortingDirective == "asc") {
+                return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
+            }
+            else {
+                return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
+            }
+        }
+        else {
+            if (pages_ascending_filter_sorting) {
+                return a.getAttribute("user-sorting") - b.getAttribute("user-sorting");
+            }
+            else {
+                return b.getAttribute("user-sorting") - a.getAttribute("user-sorting");
+            }
+        }
+
+    });
+    if (pages_numbers_first_in_filters) {
+        assortedPages.forEach(function (div) { parentPages.append(div); });
+        numPages.forEach(function (div) { parentPages.append(div); });
+        alphPages.forEach(function (div) { parentPages.append(div); });
+    }
+    else {
+        assortedPages.forEach(function (div) { parentPages.append(div); });
+        alphPages.forEach(function (div) { parentPages.append(div); });
+        numPages.forEach(function (div) { parentPages.append(div); });
+    }
+}
+
+// Invocation
+if (pages_default_filters_to_sort != "") {
+    pages_default_filters_to_sort.forEach(function (filter) {
+        var sortingDirective = filter.includes("=") ? filter.split("=").pop() : false;
+        var filter = filter.includes("=") ? filter.split("=").shift() : filter;
+        var filterStructured = `[data-filter-name='${filter}']`;
+        filter == "Kategorier" ? sortFiltersPages(`${filterStructured} .aw-filter-list`, sortingDirective) : sortFiltersPages(`${filterStructured} .aw-filter-tag-list`, sortingDirective);
+    });
+}
+
+// Function position: https://explain.helloretail.com/P8uQo1AR.
+// Invocation position: https://explain.helloretail.com/Wnu7vyO1.
+```
 ### *Hide/Show filter based on input*
 ```js
 // Placement of snippet: last line in the function named "load_more_results"
