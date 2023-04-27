@@ -1037,7 +1037,7 @@ fetch('https://core.helloretail.com/serve/collect/pageview',{
     console.log(data)
 });
 ```
-### *How to structure a Page-view REST-API request url*
+### *How to structure a Click REST-API request url*
 ```js
 fetch('https://core.helloretail.com/serve/collect/click',{
     method: "POST", 
