@@ -1225,3 +1225,43 @@ url: $("price, url").text().replace(/^0.*/, "").replace(/.*(http)/, "$1")
 ```js
 .removeMatching(/^(?!steel||titanium|titan|).*/gi)
 ```
+
+### *Fetch Recommendation API request example* 
+```js
+fetch('https://core.helloretail.com/serve/recoms', {
+    "method": 'POST',
+    "mode": 'cors',
+    "credentials": 'include',
+    "headers": {
+        'Content-Type': 'application/json'
+    },
+    "body": JSON.stringify({
+        "websiteUuid":"6afc16a0-6657-4f10-859e-54ea03a6759b",
+        "trackingUserId":"64538f21e1c2815a658631dd",
+        "requests":[
+            {
+                "key": "k62a1aa2f5c5f7e7b1b50458f",
+                "format":"json",
+                "fields": ["title","url"], // fields can be removed in order to return ALL data.
+                "context": {
+                    "hierarchies":[["Clothing","Women"]],
+                    "brand": "Nike",
+                    "urls": ["https://product-urls-for-context"],
+                    "price":20,
+                    "extraData":{
+                        "color":"black"
+                    },
+                    "extraDataList":{
+                        "d9995dTargetGroups":["590"]
+                    }
+                }
+            }
+            
+        ]
+    })
+}).then((res) => {
+    return res.json();
+}).then((data) => {
+    console.log(data)
+});
+```
