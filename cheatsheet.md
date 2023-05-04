@@ -1226,7 +1226,7 @@ url: $("price, url").text().replace(/^0.*/, "").replace(/.*(http)/, "$1")
 .removeMatching(/^(?!steel||titanium|titan|).*/gi)
 ```
 
-### *Fetch Recommendation API request example* 
+### *[Managed Fetch Recommendation API request example](https://developer.helloretail.com/api/recoms/)* 
 ```js
 fetch('https://core.helloretail.com/serve/recoms', {
     "method": 'POST',
@@ -1264,4 +1264,45 @@ fetch('https://core.helloretail.com/serve/recoms', {
 }).then((data) => {
     console.log(data)
 });
+```
+
+### ### *[Unmanaged Fetch Recommendation API request example](https://developer.helloretail.com/api/recoms/)* 
+```js
+fetch('https://core.helloretail.com/serve/recoms', {
+    "method": 'POST',
+    "mode": 'cors',
+    "credentials": 'include',
+    "headers": {
+        'Content-Type': 'application/json'
+    },
+    "body": JSON.stringify({
+        "websiteUuid":"3ced6ff1-d6a1-4263-9e0d-34cdfd9b3056",
+        "trackingUserId":"644fa63d74a13834ab841abc",
+        "requests":[
+            {
+                "trackingKey":"frontpage-12",
+                "fields":["title","url"], // fields can be removed in order to return ALL data.
+                "hideAdditionalVariants":true,
+                "count":8,
+                "sources":[
+                    {
+                        "type":"TOP",
+                        "limit":4,
+                        "filters":{
+                            "hierarchies": {"$in": [["Legetøj","Klassisk Legetøj","Sjovt legetøj til lave priser"]]}
+                        }
+                    },
+                    {
+                        "type":"RETARGETED",
+                    }
+                ]
+            }
+        ]
+    })
+}).then((res) => {
+    return res.json();
+}).then((data) => {
+    console.log(data)
+});
+
 ```
