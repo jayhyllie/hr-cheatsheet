@@ -2,17 +2,22 @@
 
 ### *isNew based on hours elapsed from when we saw the product / date provided by customer in feed*
 ```js
-function hoursChecker(customerDate) {
+function hoursChecker(customerDate, hoursToConsiderNew) {
     const createdDate = new Date(customerDate).getTime();
     const currentDate = new Date().getTime();
-    /*let secondsElapsed = Math.round((currentDate - createdDate) / 1000);
-    let minutesElapsed = secondsElapsed / 60;
-    let hoursElapsed = minutesElapsed / 60;*/
 
-    // Convert time from milliseconds, to seconds, to hours.
-    const compactHoursElapsed = Math.round((((currentDate - createdDate) / 1000) / 60) / 60);
-    // Products are considered new if they were created within the last NUMBER hours.
-    return compactHoursElapsed > 48 ? true : false;
+    // Convert time from milliseconds to hours. Return true if elapsed hours is lower than provided number. 
+    const hoursElapsed = Math.round((currentDate - createdDate) / (1000 * 60 * 60));
+    return hoursElapsed < hoursToConsiderNew ? true : false;
+}
+
+function transform(item: any): TransformationResult {
+    return {
+        ...item,
+        extraData: {
+            isNewHours: hoursChecker(item.date, 720),
+        }
+    };
 };
 ```
 
@@ -20,8 +25,8 @@ function hoursChecker(customerDate) {
 
 ```js
 function daysChecker(customerDate, daysToConsiderNew) {
-    const createdDate = new Date(customerDate);
-    const currentDate = new Date();
+    const createdDate = new Date(customerDate).getTime();
+    const currentDate = new Date().getTime();
 
     // Convert time from milliseconds to days. Return true if elapsed days is lower than provided number. 
     const daysElapsed = Math.round((currentDate - createdDate) / (1000 * 60 * 60 * 24));
