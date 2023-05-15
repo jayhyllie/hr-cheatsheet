@@ -1266,7 +1266,7 @@ fetch('https://core.helloretail.com/serve/recoms', {
 });
 ```
 
-### ### *[Unmanaged Fetch Recommendation API request example](https://developer.helloretail.com/api/recoms/)* 
+### *[Unmanaged Fetch Recommendation API request example](https://developer.helloretail.com/api/recoms/)* 
 ```js
 fetch('https://core.helloretail.com/serve/recoms', {
     "method": 'POST',
