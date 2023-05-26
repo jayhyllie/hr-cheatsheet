@@ -43,3 +43,31 @@ function transform(item: any): TransformationResult {
     };
 };
 ```
+
+### *How to handle extraDataList array data.*
+```js
+// Declare function that accepts an item parameter.
+function arrayPusher(item){
+    // Define an empty array.
+    const pushedArray = [];
+    // Push different values from the item parameter to the defined array.
+    pushedArray.push(item.id + item.albumId);
+    pushedArray.push(item.id);
+    pushedArray.push(item.albumId);
+    // Return the populated array to the property where it was invoked.
+    return pushedArray;
+}
+
+function transform(item: any): TransformationResult {
+    return {
+        ...item,
+        imgUrl: item.thumbnailUrl,
+		price: item.id,
+        extraDataList:{
+            pushedArrayData: arrayPusher(item),
+            simpleArrayData: [item.id,item.albumId]
+        }
+    };
+};
+
+```
