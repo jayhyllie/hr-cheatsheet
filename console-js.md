@@ -21,6 +21,6 @@ console.log(checkbox);
 ### *Use array generated from snippet above to check same inputs on a duplicate domain in supervisor*
 ```js
 [0, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14].forEach(function(item,index){
-    document.querySelectorAll("tr td:last-of-type input[type='checkbox']")[checkbox[index]].click()
+    document.querySelectorAll("tr td:last-of-type input[type='checkbox']")[[0, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14][index]].click()
 });
 ```
