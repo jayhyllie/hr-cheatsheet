@@ -7,20 +7,45 @@ let html = `<div id="helloretail-category-page-624421fb2d64b76dbff35627" data-fi
 document.querySelector("SELECTOR TO BE POSITIONED RELATIVE TO").insertAdjacentHTML("beforebegin",html);
 ```
 
-### *Get array of checked inputs in the Search filter & sorting column*
+### *Create button to copy array of checked inputs in the Search filter & sorting column, to clipboard.*
 ```js
-let checkbox = [];
+let html = `<span class="hr-copy-checkbox-setup" style="padding:4px 8px;background-color:#000;color:white;cursor:pointer;">Copy checkbox setup</span>`;
 
-document.querySelectorAll("tr td:last-of-type input[type='checkbox']").forEach(function(item,index){
-    if(item.checked){
-        checkbox.push(index);
-    }
+document.querySelector(".table.table-condensed.table-striped").insertAdjacentHTML("afterend",html);
+
+document.querySelector(".hr-copy-checkbox-setup").addEventListener("click",function(){
+    let checkbox = [];
+    document.querySelectorAll("tr td:last-of-type input[type='checkbox']").forEach(function(item,index){
+        if(item.checked){
+            checkbox.push(item.parentElement.parentElement.querySelector("td:first-of-type").textContent);
+        }
+    });
+    navigator.clipboard.writeText("Copied checkbox setup: "+JSON.stringify(checkbox));
+    navigator.clipboard.readText().then((clipText)=>{ console.log(`Checkbox setup was copied to clipboard: <${clipText}>`) });
 });
-console.log(checkbox);
 ```
-### *Use array generated from snippet above to check same inputs on a duplicate domain in supervisor*
+### *Create button to use array of checked inputs, copied to clipboard holder, to paste to new domain.*
 ```js
-[0, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14].forEach(function(item,index){
-    document.querySelectorAll("tr td:last-of-type input[type='checkbox']")[[0, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14][index]].click()
-});
+let html = `<span class="hr-paste-checkbox-setup" style="padding:4px 8px;background-color:#000;color:white;cursor:pointer;">Paste checkbox setup</span>`;
+
+document.querySelector(".table.table-condensed.table-striped").insertAdjacentHTML("afterend",html);
+
+document.querySelector(".hr-paste-checkbox-setup").addEventListener("click",function(){
+    navigator.clipboard.readText().then((clipText)=>{
+        if(clipText.includes("Copied checkbox setup:") && !clipText.includes("let html")){
+            
+        JSON.parse(clipText.split("setup: ").pop()).forEach(function(item){
+            if(!document.querySelector(`.table.table-condensed.table-striped tr:has(input[value='${item}']) td:last-of-type input`).checked){
+                document.querySelector(`.table.table-condensed.table-striped tr:has(input[value='${item}']) td:last-of-type input`).click();
+            }
+            else{
+                console.log("nothing");
+            }
+        })
+        }
+        else{
+            console.log("your most recent clipboard text, is not the copied checkbox setup, required for pasting of checkbox setup");
+        }
+    })
+})
 ```
