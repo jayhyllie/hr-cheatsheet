@@ -133,3 +133,57 @@ function transform(product:any): TransformationResult {
 	};
 }
 ```
+
+### *Extract specific filter value based on filter name, from array of anonymous filters (mostly applicable to XML feeds)*
+
+```js
+function specificAttributesHandler(attribute,name){
+	let value = [];
+	if(Array.isArray(attribute)){
+		attribute.forEach((attr)=>{
+			if(attr.name === name){
+				if(Array.isArray(attr.options.option)) {
+					value = attr.options.option;
+				} else {
+					value.push(attr.options.option);
+				}
+			}
+		})
+	}
+	return value;
+}
+
+
+function transform(product:any): TransformationResult {
+	return {
+		extraDataList: {
+			colors: specificAttributesHandler(product.PATH_TO_ARRAY_OF_ANONYMOUS_FILTERS,"Kleur"),
+			material: specificAttributesHandler(product.PATH_TO_ARRAY_OF_ANONYMOUS_FILTERS,"Materiaal"),
+			sizes: specificAttributesHandler(product.PATH_TO_ARRAY_OF_ANONYMOUS_FILTERS,"Maat"),
+			width: specificAttributesHandler(product.PATH_TO_ARRAY_OF_ANONYMOUS_FILTERS,"Breedte/wijdte")
+		}
+	};
+}
+
+```
+
+### *Check if specific filter value, based on filter name, exists within an anonymous array of filters, and return a boolean value (mostly applicable to XML feeds)*
+
+```js
+function attributeExistsCheck(attribute,name) {
+	const exists = function(attr) {
+		return attr.name === name
+	}
+	//return attribute.some(exists) ? 'Yes' : 'No' --- Ternary operator which will return 'Yes' or 'No', instead of 'true' or 'false'
+    return attribute.some(exists)
+}
+
+
+function transform(product:any): TransformationResult {
+	return {
+		extraData: {
+			removeableSole: attributeExistsCheck(product.PATH_TO_ARRAY_OF_ANONYMOUS_FILTERS, "Uitneembaar voetbed")
+		}
+	};
+}
+```
