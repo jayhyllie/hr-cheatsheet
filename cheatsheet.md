@@ -5,6 +5,7 @@
 ```js
 - $("html").parent()[0].location.href
 - $("link[rel='canonical']").attr("href")
+- $("meta[property='og:url']").attr("content")
 ```
 ### *HTML Unescape*
 ```js
