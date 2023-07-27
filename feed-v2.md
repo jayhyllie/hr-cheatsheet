@@ -187,3 +187,32 @@ function transform(product:any): TransformationResult {
 	};
 }
 ```
+
+### *Remove duplicate values from an array, and assign the array of unique values to an extraDataList selector*
+
+```js
+function imageSwatchHandler(variants){
+	// Prepare empty array.
+	let images = [];
+	// Loop through ALL of the images, and push them to the 'images' array.
+	variants.forEach(function(variant){
+		images.push(variant.image.thumb);
+	});
+	// filter on contents of the 'images' array, and compare indexOf, to the index of the current iteration.
+	let uniqueImages = images.filter(function(image, index){
+		// indexOf will always return the index of the first element that matches the criteria, thus ensuring 
+		// that any duplicate values found in the following iterations of the loop, does not match the indexOf value,
+		// preventing them from being returned in the filtered array.
+		return images.indexOf(image) === index;
+	});
+	return uniqueImages
+}
+
+function transform(product:any): TransformationResult {
+	return {
+		extraDataList: {
+			imageSwatches: imageSwatchHandler(product.PATH_TO_ARRAY_OF_DUPLICATE_VALUES)
+		}
+	};
+}
+```
