@@ -172,7 +172,7 @@ fetch('https://core.helloretail.com/serve/recoms', {
 
 ### *How to structure a [CRUD](https://developer.helloretail.com/api/data/) create API request*
 ```js
-fetch('https://core.helloretail.com/api/websites/d1448622-0f2c-44d8-a323-0bb7089e5a28/products?apiKey=b5SZaczwoMTNYJOtyEpCvmYRtcRCTGi2', {
+fetch('https://core.helloretail.com/api/websites/WEBSITE_UUID/products?apiKey=API_KEY', {
     method: 'POST',
     body: JSON.stringify({
         data: {
@@ -218,7 +218,7 @@ created: "2023-06-15 19:44:54",
 
 ### *How to structure a [CRUD](https://developer.helloretail.com/api/data/) read API request*
 ```js
-fetch('https://core.helloretail.com/api/websites/d1448622-0f2c-44d8-a323-0bb7089e5a28/products?id=https%3A%2F%2Fgodkend.bog-ide.dk%2Fprodukt%2F123456789%2Fhello-retail-test-product-CAN-BE-DELETED&apiKey=b5SZaczwoMTNYJOtyEpCvmYRtcRCTGi2', {
+fetch('https://core.helloretail.com/api/websites/WEBSITE_UUID/products?id=https%3A%2F%2Fgodkend.bog-ide.dk%2Fprodukt%2F123456789%2Fhello-retail-test-product-CAN-BE-DELETED&apiKey=API_KEY', {
     method: 'GET',
 }).then((res) => {
     return res.json();
@@ -229,7 +229,7 @@ fetch('https://core.helloretail.com/api/websites/d1448622-0f2c-44d8-a323-0bb7089
 
 ### *How to structure a [CRUD](https://developer.helloretail.com/api/data/) update API request*
 ```js
-fetch('https://core.helloretail.com/api/websites/d1448622-0f2c-44d8-a323-0bb7089e5a28/products?id=https%3A%2F%2Fgodkend.bog-ide.dk%2Fprodukt%2F123456789%2Fhello-retail-test-product-CAN-BE-DELETED&apiKey=b5SZaczwoMTNYJOtyEpCvmYRtcRCTGi2', {
+fetch('https://core.helloretail.com/api/websites/WEBSITE_UUID/products?id=https%3A%2F%2Fgodkend.bog-ide.dk%2Fprodukt%2F123456789%2Fhello-retail-test-product-CAN-BE-DELETED&apiKey=API_KEY', {
     method: 'PATCH',
     body: JSON.stringify({
         data: {
@@ -275,7 +275,7 @@ fetch('https://core.helloretail.com/api/websites/d1448622-0f2c-44d8-a323-0bb7089
 
 ### *How to structure a [CRUD](https://developer.helloretail.com/api/data/) delete API request*
 ```js
-fetch('https://core.helloretail.com/api/websites/d1448622-0f2c-44d8-a323-0bb7089e5a28/products?id=https%3A%2F%2Fgodkend.bog-ide.dk%2Fprodukt%2F123456789%2Fhello-retail-test-product-CAN-BE-DELETED&apiKey=b5SZaczwoMTNYJOtyEpCvmYRtcRCTGi2', {
+fetch('https://core.helloretail.com/api/websites/WEBSITE_UUID/products?id=https%3A%2F%2Fgodkend.bog-ide.dk%2Fprodukt%2F123456789%2Fhello-retail-test-product-CAN-BE-DELETED&apiKey=API_KEY', {
     method: 'DELETE',
 }).then((res) => {
     return res.json();
