@@ -35,11 +35,16 @@ document.querySelector(".hr-paste-checkbox-setup").addEventListener("click",func
         if(clipText.includes("Copied checkbox setup:") && !clipText.includes("let html")){
             
         JSON.parse(clipText.split("setup: ").pop()).forEach(function(item){
-            if(!document.querySelector(`.table.table-condensed.table-striped tr:has(input[value='${item}']) td:last-of-type input`).checked){
-                document.querySelector(`.table.table-condensed.table-striped tr:has(input[value='${item}']) td:last-of-type input`).click();
+            if(document.querySelector(`.table.table-condensed.table-striped tr:has(input[value='${item}']) td:last-of-type input`)){
+                if(!document.querySelector(`.table.table-condensed.table-striped tr:has(input[value='${item}']) td:last-of-type input`).checked){
+                    document.querySelector(`.table.table-condensed.table-striped tr:has(input[value='${item}']) td:last-of-type input`).click();
+                }
+                else{
+                    console.log(`input named ${item} was already checked, skipping to next`);
+                }
             }
             else{
-                console.log("nothing");
+                console.log(`element named ${item} did not exist, skipping to next`);
             }
         })
         }
