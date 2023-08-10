@@ -169,3 +169,117 @@ fetch('https://core.helloretail.com/serve/recoms', {
 });
 
 ```
+
+### *How to structure a [CRUD](https://developer.helloretail.com/api/data/) create API request*
+```js
+fetch('https://core.helloretail.com/api/websites/d1448622-0f2c-44d8-a323-0bb7089e5a28/products?apiKey=b5SZaczwoMTNYJOtyEpCvmYRtcRCTGi2', {
+    method: 'POST',
+    body: JSON.stringify({
+        data: {
+            id: "https://godkend.bog-ide.dk/produkt/123456789/hello-retail-test-product-CAN-BE-DELETED",
+            type: "products",
+            attributes: {
+                title: "Adidas - Sneakers (HELLO RETAIL TEST PRODUCT THAT CAN BE DELETED)",
+                productNumber: 123456789,
+                variantProductNumbers: [123456789,987654321,12345,9876],
+                imgUrl: "https://test.orcanice.com/woo/wp-content/uploads/2022/12/luma-stability-ball-pink-100x100.jpg",
+                oldPrice: 1227,
+                price: 1337,
+                priceExVat: 1000,
+                oldPriceExVat: 800,
+                currency: "dkk",
+                brand:"Adidas",
+                hierarchies: [
+                    ["Shoes", "Sneakers"],
+                    ["Men","Sportswear"],
+                    ["Women","Sportswear"]
+                ],
+                description:"These shoes are incredible, everyone should own a pair!",
+                keywords: "these shoes are cool white unisex sport Digge loo digge ley",
+                inStock: true,
+                url: "https://godkend.bog-ide.dk/produkt/123456789/hello-retail-test-product-CAN-BE-DELETED",
+                ean: 123456789,
+created: "2023-06-15 19:44:54",
+                extraData: {
+                    color: "white"
+                },
+                extraDataList: {
+                    sizes: ["36", "37", "38", "39", "40", "41", "42"]
+                }
+            }
+        }
+    })
+}).then((res) => {
+    return res.json();
+}).then((data) => {
+    console.log(data)
+});
+```
+
+### *How to structure a [CRUD](https://developer.helloretail.com/api/data/) read API request*
+```js
+fetch('https://core.helloretail.com/api/websites/d1448622-0f2c-44d8-a323-0bb7089e5a28/products?id=https%3A%2F%2Fgodkend.bog-ide.dk%2Fprodukt%2F123456789%2Fhello-retail-test-product-CAN-BE-DELETED&apiKey=b5SZaczwoMTNYJOtyEpCvmYRtcRCTGi2', {
+    method: 'GET',
+}).then((res) => {
+    return res.json();
+}).then((data) => {
+    console.log(data)
+});
+```
+
+### *How to structure a [CRUD](https://developer.helloretail.com/api/data/) update API request*
+```js
+fetch('https://core.helloretail.com/api/websites/d1448622-0f2c-44d8-a323-0bb7089e5a28/products?id=https%3A%2F%2Fgodkend.bog-ide.dk%2Fprodukt%2F123456789%2Fhello-retail-test-product-CAN-BE-DELETED&apiKey=b5SZaczwoMTNYJOtyEpCvmYRtcRCTGi2', {
+    method: 'PATCH',
+    body: JSON.stringify({
+        data: {
+            id: "https://godkend.bog-ide.dk/produkt/123456789/hello-retail-test-product-CAN-BE-DELETED",
+            type: "products",
+            attributes: {
+                title: "Adidas - Sneakers (HELLO RETAIL TEST PRODUCT THAT CAN BE DELETED)",
+                productNumber: 123456789,
+                variantProductNumbers: [123456789,987654321,12345,9876],
+                imgUrl: "https://test.orcanice.com/woo/wp-content/uploads/2022/12/luma-stability-ball-pink-100x100.jpg",
+                oldPrice: 1227,
+                price: 2337,
+                priceExVat: 1000,
+                oldPriceExVat: 800,
+                currency: "dkk",
+                brand:"Adidas",
+                hierarchies: [
+                    ["Shoes", "Sneakers"],
+                    ["Men","Sportswear"],
+                    ["Women","Sportswear"]
+                ],
+                description:"These shoes are incredible, everyone should own a pair!",
+                keywords: "these shoes are cool white unisex sport Digge loo digge ley",
+                inStock: true,
+                url: "https://godkend.bog-ide.dk/produkt/123456789/hello-retail-test-product-CAN-BE-DELETED",
+                ean: 123456789,
+                created: "2023-06-15 19:44:54",
+                extraData: {
+                    color: "white"
+                },
+                extraDataList: {
+                    sizes: ["36", "37", "38", "39", "40", "41", "42"]
+                }
+            }
+        }
+    })
+}).then((res) => {
+    return res.json();
+}).then((data) => {
+    console.log(data)
+});
+```
+
+### *How to structure a [CRUD](https://developer.helloretail.com/api/data/) delete API request*
+```js
+fetch('https://core.helloretail.com/api/websites/d1448622-0f2c-44d8-a323-0bb7089e5a28/products?id=https%3A%2F%2Fgodkend.bog-ide.dk%2Fprodukt%2F123456789%2Fhello-retail-test-product-CAN-BE-DELETED&apiKey=b5SZaczwoMTNYJOtyEpCvmYRtcRCTGi2', {
+    method: 'DELETE',
+}).then((res) => {
+    return res.json();
+}).then((data) => {
+    console.log(data)
+});
+```
