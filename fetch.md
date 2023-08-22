@@ -283,3 +283,22 @@ fetch('https://core.helloretail.com/api/websites/WEBSITE_UUID/products?id=https%
     console.log(data)
 });
 ```
+
+### *How to structure a customerId REST-API request url*
+```js
+fetch('https://core.helloretail.com/serve/collect/customerId',{
+    method: "POST", 
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+    "trackingUserId": "TRACKING_USER_ID_VALUE",
+    "websiteUuid": "WEBSITE_UUID_VALUE",
+    "id":"CUSTOMER_ID_VALUE"
+}), 
+}).then((res) => {
+    return res.json();
+}).then((data) => {
+    console.log(data)
+});
+```
