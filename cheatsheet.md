@@ -1,7 +1,11 @@
 # **Cheatsheet**
 ## *FeedStuff*
 
-### *Url Selector*
+### *Url selector JS*
+```js
+- $("html")[0].parentNode.location.href
+```
+### *Url Selector jQuery*
 ```js
 - $("html").parent()[0].location.href
 - $("link[rel='canonical']").attr("href")
