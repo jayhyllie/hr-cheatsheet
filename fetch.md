@@ -302,3 +302,18 @@ fetch('https://core.helloretail.com/serve/collect/customerId',{
     console.log(data)
 });
 ```
+
+### *How to generate a CSRF Token on Shopware customers, through the customers [CSRF-Token-endpoint](https://developers.shopware.com/developers-guide/csrf-protection/)*
+```js
+fetch("https://www.domain-name/csrf/generate",{
+	method:"POST",
+
+})
+.then((item)=>{ 
+    return item.json() 
+})
+.then(function(data){ 
+    console.log(data) 
+})
+
+```
