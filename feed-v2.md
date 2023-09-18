@@ -188,6 +188,36 @@ function transform(product:any): TransformationResult {
 }
 ```
 
+### *Woocommerce attributes helper function*
+
+```js
+function specificAttributesHandler(attribute,name){
+	let value = [];
+	if(Array.isArray(attribute)){
+		attribute.forEach((attr)=>{
+			if(attr._xmlAttributes.name === name){
+				if(Array.isArray(attr.attributeValue)) {
+					value.push(...attr.attributeValue);
+				} else {
+					value.push(attr.attributeValue);
+				}
+			}
+		})
+	}
+	return new Set(value);
+}
+
+function transform(product:any): TransformationResult {
+	return {
+		...product,
+		extraDataList: {
+			pa_modell: specificAttributesHandler(product.attributes[0]?.attribute,"pa_modell"),
+			pa_modeller: specificAttributesHandler(product.attributes[0]?.attribute,"pa_modeller"),
+		}
+	};
+}
+```
+
 ### *Remove duplicate values from an array, and assign the array of unique values to an extraDataList selector*
 
 ```js
