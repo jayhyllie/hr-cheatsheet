@@ -1,5 +1,10 @@
 # **Feed V2 JS snippets**
+### *UnescapeHTML*
+```js
+const parser = new DOMParser();
 
+description: parser.parseFromString(product.description, "text/html").textContent
+```
 ### *isNew based on hours elapsed from when we saw the product / date provided by customer in feed*
 ```js
 function hoursChecker(customerDate, hoursToConsiderNew) {
