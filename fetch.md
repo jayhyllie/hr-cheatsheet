@@ -24,14 +24,14 @@ fetch("https://core.helloretail.com/serve/pages/{key}", {
                 "brand":"nike"
                 
             ],
-            "sorting":[
-                "title desc"
-            ],
-            "params":{
-                "filters":"{'hierarchies':['Strömbrytare och vägguttag']}"
-            },
-            "trackingUserId":"{hello_retail_id cookie}"
-        }
+        },
+	"sorting":[
+		"title desc"
+   	 ],
+    	"params":{
+		"filters":"{'hierarchies':['Strömbrytare och vägguttag']}"
+    	},
+    	"trackingUserId":"{hello_retail_id cookie}"
     })
 }).then((res)=>{ return res.json() }).then((data)=>{ console.log(data) });
 ```
